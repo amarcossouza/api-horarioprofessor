@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 namespace API_HorarioProfessor.Models
 {
-    [Table("ParametroDiarioOficial")]
+    [Table("hprof_parametrodiariooficial")]
     public class ParametroDiarioOficial
     {
         [Key]

@@ -27,7 +27,7 @@ namespace API_HorarioProfessor.Services.CoreServices.MetodosAuxiliares
         //        }
 
         //        var query = @"SELECT Id, AnoLetivo, EscolaId, DataCriacao, TipoEsTipoEcolacola, Descricao, Sigla, TodosOsAnos, QuantidaAulas
-        //              FROM MateriaAulasPorAno
+        //              FROM materiaaulasporano
         //              WHERE EscolaId = @EscolaId
         //              AND AnoLetivo = @AnoLetivo";
 
@@ -53,7 +53,7 @@ namespace API_HorarioProfessor.Services.CoreServices.MetodosAuxiliares
         //////        }
 
         //////        var query = @"SELECT Id, AnoLetivo, EscolaId, DataCriacao, TipoEscola, Descricao,ModalidadeEscolar,  Sigla, TodosOsAnos, QuantidadeAulas
-        //////              FROM MateriaAulasPorAno
+        //////              FROM materiaaulasporano
         //////              WHERE EscolaId = @EscolaId
         //////              AND AnoLetivo = @AnoLetivo";
         //////        // AND Periodo = @Periodo";
@@ -83,7 +83,7 @@ namespace API_HorarioProfessor.Services.CoreServices.MetodosAuxiliares
 
         ////////////        // Primeira query para obter ModalidadesEscolares distintas do CadastroProfessor
         ////////////        var queryCad = @"SELECT  DISTINCT Modalidade
-        ////////////                      FROM CadastroProfessor
+        ////////////                      FROM hprof_cadastroprofessor
         ////////////                      WHERE IdEscola = @EscolaId
         ////////////                      AND AnoLetivo = @AnoLetivo
         ////////////                      AND Periodo = @Periodo";
@@ -107,7 +107,7 @@ namespace API_HorarioProfessor.Services.CoreServices.MetodosAuxiliares
         ////////////        // Segunda query para obter dados de MateriaAulasPorAno usando as modalidades obtidas
         ////////////        var query = @"SELECT Id, AnoLetivo,Periodo, EscolaId, DataCriacao, TipoEscola, Descricao, ModalidadeEscolar, 
         ////////////                          Sigla, TodosOsAnos, QuantidadeAulas
-        ////////////                   FROM MateriaAulasPorAno
+        ////////////                   FROM materiaaulasporano
         ////////////                   WHERE EscolaId = @EscolaId
         ////////////                   AND AnoLetivo = @AnoLetivo
         ////////////                   AND Periodo = @periodo
@@ -136,7 +136,7 @@ namespace API_HorarioProfessor.Services.CoreServices.MetodosAuxiliares
 
                 // Primeira query para obter ModalidadesEscolares distintas do CadastroProfessor
                 var queryCad = @"SELECT DISTINCT Modalidade
-                         FROM CadastroProfessor
+                         FROM hprof_cadastroprofessor
                          WHERE IdEscola = @EscolaId
                          AND AnoLetivo = @AnoLetivo
                          AND Periodo = @Periodo";
@@ -162,7 +162,7 @@ namespace API_HorarioProfessor.Services.CoreServices.MetodosAuxiliares
 
                 var query = $@"SELECT Id, AnoLetivo, Periodo, EscolaId, DataCriacao, TipoEscola, Descricao, ModalidadeEscolar, 
                               Sigla, TodosOsAnos, QuantidadeAulas
-                       FROM MateriaAulasPorAno
+                       FROM hprof_materiaaulasporano
                        WHERE EscolaId = @EscolaId
                        AND AnoLetivo = @AnoLetivo
                        AND Periodo = @Periodo

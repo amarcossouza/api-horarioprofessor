@@ -27,7 +27,7 @@ namespace API_HorarioProfessor.Services
                     connection.Open();
                 }
 
-                var query = @"INSERT INTO PesquisaLog (EscolaId, NomeEscola, UsuarioId, UsuarioLogin, Descricao, DataHoraPesquisa, QuantidadePesquisas) 
+                var query = @"INSERT INTO hprof_pesquisalog (EscolaId, NomeEscola, UsuarioId, UsuarioLogin, Descricao, DataHoraPesquisa, QuantidadePesquisas)
                               VALUES (@EscolaId,@NomeEscola, @UsuarioId, @UsuarioLogin, @Descricao, @DataHoraPesquisa, @QuantidadePesquisas)";
 
                 var parameters = new
@@ -54,7 +54,7 @@ namespace API_HorarioProfessor.Services
                     connection.Open();
                 }
 
-                var query = @"SELECT * FROM PesquisaLog WHERE EscolaId = @EscolaId";
+                var query = @"SELECT * FROM hprof_pesquisalog WHERE EscolaId = @EscolaId";
                 return connection.Query<PesquisaLog>(query, new { EscolaId = escolaId }).ToList();
             }
         }
@@ -75,7 +75,7 @@ namespace API_HorarioProfessor.Services
                 usuarioLogin, 
                 sum(QuantidadePesquisas) as QuantidadePesquisas
             FROM 
-                PesquisaLog 
+                hprof_pesquisalog
             GROUP BY 
                 EscolaId, 
                 NomeEscola, 

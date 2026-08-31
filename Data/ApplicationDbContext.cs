@@ -33,9 +33,10 @@ namespace API_HorarioProfessor.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Escola>().ToTable("escolas"); // Verifique se o nome da tabela está correto
-            modelBuilder.Entity<UsuarioAcesso>().ToTable("usuariosacesso"); // Verifique se o nome da tabela está correto
-            modelBuilder.Entity<PesquisaLog>().ToTable("pesquisalog");
+            modelBuilder.Entity<Escola>().ToTable("hprof_escolas");
+            modelBuilder.Entity<UsuarioAcesso>().ToTable("hprof_usuariosacesso");
+            modelBuilder.Entity<PesquisaLog>().ToTable("hprof_pesquisalog");
+            modelBuilder.Entity<ConfiguracaoAcao>().ToTable("hprof_configuracaoacao");
 
             // Configurar índices
             modelBuilder.Entity<PesquisaLog>()

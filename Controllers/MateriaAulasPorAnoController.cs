@@ -45,7 +45,7 @@ namespace API_HorarioProfessor.Controllers
 
                     // Consulta para buscar registros com base no EscolaId
                     var query = @"SELECT Id, AnoLetivo, EscolaId, DataCriacao, TipoEscola, Descricao, Sigla, TodosOsAnos, QuantidadeAulas
-                          FROM MateriaAulasPorAno
+                          FROM hprof_materiaaulasporano
                           WHERE EscolaId = @EscolaId";
 
                     var resultados = await connection.QueryAsync<MateriaAulasPorAno>(query, new { EscolaId = escolaId });
@@ -80,7 +80,7 @@ namespace API_HorarioProfessor.Controllers
                     // Ajustando a DataCriacao para o horário de Brasília
                     materiaAulas.DataCriacao = nowInBrazil;
 
-                    var query = @"INSERT INTO MateriaAulasPorAno (AnoLetivo, EscolaId, DataCriacao, TipoEscola, Descricao, Sigla, TodosOsAnos, QuantidadeAulas)
+                    var query = @"INSERT INTO hprof_materiaaulasporano (AnoLetivo, EscolaId, DataCriacao, TipoEscola, Descricao, Sigla, TodosOsAnos, QuantidadeAulas)
                           VALUES (@AnoLetivo, @EscolaId, @DataCriacao, @TipoEscola, @Descricao, @Sigla, @TodosOsAnos, @QuantidadeAulas)";
 
                     await connection.ExecuteAsync(query, materiaAulas);
@@ -114,7 +114,7 @@ namespace API_HorarioProfessor.Controllers
                     }
 
                     // Atualizar os dados no banco de dados
-                    var query = @"UPDATE MateriaAulasPorAno SET
+                    var query = @"UPDATE hprof_materiaaulasporano SET
                             AnoLetivo = @AnoLetivo,
                             EscolaId = @EscolaId,
                             DataCriacao = @DataCriacao,
@@ -168,7 +168,7 @@ namespace API_HorarioProfessor.Controllers
                     if (connection.State == ConnectionState.Closed)
                         await connection.OpenAsync();
 
-                    var query = "DELETE FROM MateriaAulasPorAno WHERE Id = @Id";
+                    var query = "DELETE FROM hprof_materiaaulasporano WHERE Id = @Id";
                     await connection.ExecuteAsync(query, new { Id = id });
 
                     return Ok(new { Success = true, Message = "Registro excluído com sucesso." });
@@ -192,7 +192,7 @@ namespace API_HorarioProfessor.Controllers
                     if (connection.State == ConnectionState.Closed)
                         await connection.OpenAsync();
 
-                    var query = "SELECT * FROM MateriaAulasPorAno WHERE Id = @Id";
+                    var query = "SELECT * FROM hprof_materiaaulasporano WHERE Id = @Id";
                     var result = await connection.QueryFirstOrDefaultAsync<MateriaAulasPorAno>(query, new { Id = id });
 
                     if (result == null)

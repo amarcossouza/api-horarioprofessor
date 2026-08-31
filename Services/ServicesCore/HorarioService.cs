@@ -45,7 +45,7 @@ namespace API_HorarioProfessor.Services.ServicesCore
                         {
                             string professor = matriz[linha, coluna];
 
-                            string query = @"INSERT INTO HorarioDistribuicao 
+                            string query = @"INSERT INTO hprof_horariodistribuicao
                                      (IdEscola, AnoLetivo, Periodo, NomePlanilha, DiaSemana, Linha, Coluna, Professor, DataCadastro, HoraCadastro) 
                                      VALUES (@IdEscola, @AnoLetivo, @Periodo, @NomePlanilha, @DiaSemana, @Linha, @Coluna, @Professor, @DataCadastro, @HoraCadastro);";
 
@@ -94,7 +94,7 @@ namespace API_HorarioProfessor.Services.ServicesCore
 
         //////////        // Verifica se a matriz já existe no banco de dados
         //////////        string queryVerificar = @"SELECT COUNT(MatrizHorarios) 
-        //////////                          FROM HorarioDistribuicaoJson
+        //////////                          FROM hprof_horariodistribuicaojson
         //////////                          WHERE IdEscola = @IdEscola 
         //////////                          AND AnoLetivo = @AnoLetivo
         //////////                          AND Periodo = @Periodo
@@ -118,7 +118,7 @@ namespace API_HorarioProfessor.Services.ServicesCore
 
 
         //////////        // Query para salvar no banco, incluindo a nova coluna Turmas
-        //////////        string query = @"INSERT INTO HorarioDistribuicaoJson 
+        //////////        string query = @"INSERT INTO hprof_horariodistribuicaojson
         //////////                 (IdEscola, AnoLetivo, Periodo, NomePlanilha, MatrizHorarios, Turmas, DataCadastro, HoraCadastro) 
         //////////                 VALUES (@IdEscola, @AnoLetivo, @Periodo, @NomePlanilha, @MatrizHorarios, @Turmas, @DataCadastro, @HoraCadastro);";
 
@@ -161,7 +161,7 @@ namespace API_HorarioProfessor.Services.ServicesCore
 
                 // Query para buscar todos os registros existentes no banco de dados
                 string queryBuscar = @"SELECT MatrizHorarios, Turmas 
-                               FROM HorarioDistribuicaoJson
+                               FROM hprof_horariodistribuicaojson
                                WHERE IdEscola = @IdEscola 
                                AND AnoLetivo = @AnoLetivo
                                AND Periodo = @Periodo";
@@ -197,7 +197,7 @@ namespace API_HorarioProfessor.Services.ServicesCore
                 var horaCadastro = now.TimeOfDay;
 
                 // Query para salvar no banco (mantém como antes)
-                string querySalvar = @"INSERT INTO HorarioDistribuicaoJson 
+                string querySalvar = @"INSERT INTO hprof_horariodistribuicaojson
                                (IdEscola, AnoLetivo, Periodo, NomePlanilha, MatrizHorarios, Turmas, DataCadastro, HoraCadastro) 
                                VALUES (@IdEscola, @AnoLetivo, @Periodo, @NomePlanilha, @MatrizHorarios, @Turmas, @DataCadastro, @HoraCadastro);";
 
@@ -236,7 +236,7 @@ namespace API_HorarioProfessor.Services.ServicesCore
                     await connection.OpenAsync();
 
                 // Query para buscar a matriz JSON e as turmas no banco de dados
-                string query = @"SELECT MatrizHorarios, Turmas FROM HorarioDistribuicaoJson 
+                string query = @"SELECT MatrizHorarios, Turmas FROM hprof_horariodistribuicaojson
                          WHERE IdEscola = @IdEscola AND AnoLetivo = @AnoLetivo AND Periodo = @Periodo
                          LIMIT 1;";
 

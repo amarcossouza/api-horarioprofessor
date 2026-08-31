@@ -154,12 +154,12 @@ namespace API_HorarioProfessor.Controllers
         //            }
 
         //            // Passo 1: Selecionar os dados de CadastroProfessor
-        //            var cadastroProfessorQuery = "SELECT * FROM CadastroProfessor WHERE IdEscola = @IdEscolaOrigem";
+        //            var cadastroProfessorQuery = "SELECT * FROM hprof_cadastroprofessor WHERE IdEscola = @IdEscolaOrigem";
         //            var cadastroProfessorList = await connection.QueryAsync<CadastroProfessor>(cadastroProfessorQuery, new { IdEscolaOrigem = idEscolaOrigem });
 
         //            // Passo 2: Inserir os dados em CadastroProfessor com o novo IdEscola
         //            var insertCadastroProfessorQuery = @"
-        //    INSERT INTO CadastroProfessor (NomeProfessor, TurmasAtribuidas, Materia, QuantidadeAula, AnoLetivo, Periodo, IdEscola)
+        //    INSERT INTO hprof_cadastroprofessor (NomeProfessor, TurmasAtribuidas, Materia, QuantidadeAula, AnoLetivo, Periodo, IdEscola)
         //    VALUES (@NomeProfessor, @TurmasAtribuidas, @Materia, @QuantidadeAula, @AnoLetivo, @Periodo, @IdEscolaDestino)";
 
         //            foreach (var cadastro in cadastroProfessorList)
@@ -177,12 +177,12 @@ namespace API_HorarioProfessor.Controllers
         //            }
 
         //            // Passo 3: Selecionar os dados de OpcaoHorario
-        //            var opcaoHorarioQuery = "SELECT * FROM OpcaoHorario WHERE IdEscola = @IdEscolaOrigem";
+        //            var opcaoHorarioQuery = "SELECT * FROM opcaohorario WHERE IdEscola = @IdEscolaOrigem";
         //            var opcaoHorarioList = await connection.QueryAsync<OpcaoHorarioDto>(opcaoHorarioQuery, new { IdEscolaOrigem = idEscolaOrigem });
 
         //            // Passo 4: Inserir os dados em OpcaoHorario com o novo IdEscola
         //            var insertOpcaoHorarioQuery = @"
-        //    INSERT INTO OpcaoHorario (IdProfessor_fk, Linha, Coluna, Opcao, OpcaoDaSemana, Tipo, Sigla, Ativo, DataCadastro, HoraCadastro, DataInativado, HoraInativado, Periodo, AnoLetivo, IdEscola)
+        //    INSERT INTO opcaohorario (IdProfessor_fk, Linha, Coluna, Opcao, OpcaoDaSemana, Tipo, Sigla, Ativo, DataCadastro, HoraCadastro, DataInativado, HoraInativado, Periodo, AnoLetivo, IdEscola)
         //    VALUES (@IdProfessor_fk, @Linha, @Coluna, @Opcao, @OpcaoDaSemana, @Tipo, @Sigla, @Ativo, @DataCadastro, @HoraCadastro, @DataInativado, @HoraInativado, @Periodo, @AnoLetivo, @IdEscolaDestino)";
 
         //            foreach (var opcaoHorario in opcaoHorarioList)
@@ -229,7 +229,7 @@ namespace API_HorarioProfessor.Controllers
                     }
 
                     // Passo 1: Selecionar os dados de CadastroProfessor
-                    var cadastroProfessorQuery = "SELECT * FROM CadastroProfessor WHERE IdEscola = @IdEscolaOrigem";
+                    var cadastroProfessorQuery = "SELECT * FROM hprof_cadastroprofessor WHERE IdEscola = @IdEscolaOrigem";
                     var cadastroProfessorList = await connection.QueryAsync<CadastroProfessor>(cadastroProfessorQuery, new { IdEscolaOrigem = idEscolaOrigem });
 
                     // Dicionário para mapear o Id original para o novo Id inserido
@@ -237,7 +237,7 @@ namespace API_HorarioProfessor.Controllers
 
                     // Passo 2: Inserir os dados em CadastroProfessor com o novo IdEscola e armazenar o novo Id
                     var insertCadastroProfessorQuery = @"
-                INSERT INTO CadastroProfessor (NomeProfessor, TurmasAtribuidas, Materia, QuantidadeAula, AnoLetivo, Periodo, IdEscola)
+                INSERT INTO hprof_cadastroprofessor (NomeProfessor, TurmasAtribuidas, Materia, QuantidadeAula, AnoLetivo, Periodo, IdEscola)
                 VALUES (@NomeProfessor, @TurmasAtribuidas, @Materia, @QuantidadeAula, @AnoLetivo, @Periodo, @IdEscolaDestino);
                 SELECT LAST_INSERT_ID();"; // Captura o novo Id inserido
 
@@ -259,12 +259,12 @@ namespace API_HorarioProfessor.Controllers
                     }
 
                     // Passo 3: Selecionar os dados de OpcaoHorario
-                    var opcaoHorarioQuery = "SELECT * FROM OpcaoHorario WHERE IdEscola = @IdEscolaOrigem";
+                    var opcaoHorarioQuery = "SELECT * FROM hprof_opcaohorario WHERE IdEscola = @IdEscolaOrigem";
                     var opcaoHorarioList = await connection.QueryAsync<OpcaoHorarioDto>(opcaoHorarioQuery, new { IdEscolaOrigem = idEscolaOrigem });
 
                     // Passo 4: Inserir os dados em OpcaoHorario com o novo IdEscola e o novo IdProfessor_fk
                     var insertOpcaoHorarioQuery = @"
-                INSERT INTO OpcaoHorario (IdProfessor_fk, Linha, Coluna, Opcao, OpcaoDaSemana, Tipo, Sigla, Ativo, DataCadastro, HoraCadastro, DataInativado, HoraInativado, Periodo, AnoLetivo, IdEscola)
+                INSERT INTO hprof_opcaohorario (IdProfessor_fk, Linha, Coluna, Opcao, OpcaoDaSemana, Tipo, Sigla, Ativo, DataCadastro, HoraCadastro, DataInativado, HoraInativado, Periodo, AnoLetivo, IdEscola)
                 VALUES (@IdProfessor_fk, @Linha, @Coluna, @Opcao, @OpcaoDaSemana, @Tipo, @Sigla, @Ativo, @DataCadastro, @HoraCadastro, @DataInativado, @HoraInativado, @Periodo, @AnoLetivo, @IdEscolaDestino)";
 
                     foreach (var opcaoHorario in opcaoHorarioList)

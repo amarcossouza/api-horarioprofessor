@@ -141,7 +141,7 @@ namespace API_HorarioProfessor.Controllers
         ////            }
 
         ////            // Atualizar registros antigos para inativo
-        ////            var updateQuery = @"UPDATE OpcaoHorario
+        ////            var updateQuery = @"UPDATE opcaohorario
         ////                SET Ativo = FALSE,
         ////                DataInativado = @DataInativado, 
         ////                HoraInativado = @HoraInativado
@@ -164,7 +164,7 @@ namespace API_HorarioProfessor.Controllers
         ////            });
 
         ////            // Inserir novo registro
-        ////            var insertQuery = @"INSERT INTO OpcaoHorario (IdEscola, Periodo, AnoLetivo, IdProfessor_fk, Linha, Coluna, Opcao, OpcaoDaSemana, Tipo, Sigla, Ativo, DataCadastro, HoraCadastro)
+        ////            var insertQuery = @"INSERT INTO opcaohorario (IdEscola, Periodo, AnoLetivo, IdProfessor_fk, Linha, Coluna, Opcao, OpcaoDaSemana, Tipo, Sigla, Ativo, DataCadastro, HoraCadastro)
         ////                VALUES (@IdEscola, @Periodo, @AnoLetivo, @IdProfessor_fk, @Linha, @Coluna, @Opcao, @OpcaoDaSemana, @Tipo, @Sigla, TRUE, @DataCadastro, @HoraCadastro)";
 
         ////            foreach (var opcao in opcoesProfessorDto.Opcoes)
@@ -218,7 +218,7 @@ namespace API_HorarioProfessor.Controllers
                     }
 
                     // Apagar registros antigos para este professor, escola, opção, período e ano letivo
-                    var deleteOldRecordsQuery = @"DELETE FROM OpcaoHorario 
+                    var deleteOldRecordsQuery = @"DELETE FROM hprof_opcaohorario
                                           WHERE IdProfessor_fk = @IdProfessor_fk 
                                           AND IdEscola = @IdEscola
                                           AND Opcao = @Opcao 
@@ -235,7 +235,7 @@ namespace API_HorarioProfessor.Controllers
                     });
 
                     // Inserir novos registros
-                    var insertQuery = @"INSERT INTO OpcaoHorario (IdEscola, Periodo, AnoLetivo, IdProfessor_fk, Linha, Coluna, Opcao, OpcaoDaSemana, Tipo, Sigla, Ativo, DataCadastro, HoraCadastro)
+                    var insertQuery = @"INSERT INTO hprof_opcaohorario (IdEscola, Periodo, AnoLetivo, IdProfessor_fk, Linha, Coluna, Opcao, OpcaoDaSemana, Tipo, Sigla, Ativo, DataCadastro, HoraCadastro)
                                 VALUES (@IdEscola, @Periodo, @AnoLetivo, @IdProfessor_fk, @Linha, @Coluna, @Opcao, @OpcaoDaSemana, @Tipo, @Sigla, TRUE, @DataCadastro, @HoraCadastro)";
 
                     foreach (var opcao in opcoesProfessorDto.Opcoes)
@@ -291,7 +291,7 @@ namespace API_HorarioProfessor.Controllers
                     }
 
                     // Apagar registros antigos para este professor, escola, opção, período e ano letivo
-                    var deleteOldRecordsQuery = @"DELETE FROM OpcaoHorario 
+                    var deleteOldRecordsQuery = @"DELETE FROM hprof_opcaohorario
                                           WHERE IdProfessor_fk = @IdProfessor_fk 
                                           AND IdEscola = @IdEscola                                          
                                           AND Periodo = @Periodo
@@ -337,7 +337,7 @@ namespace API_HorarioProfessor.Controllers
                     var query = @"SELECT Id, IdEscola, IdProfessor_fk, Linha, Coluna, Opcao, OpcaoDaSemana, 
                           Tipo, Sigla, Ativo, DataCadastro, HoraCadastro, 
                           DataInativado, HoraInativado 
-                          FROM OpcaoHorario
+                          FROM hprof_opcaohorario
                           WHERE IdEscola = @IdEscola                    
                           AND Periodo = @Periodo 
                           AND AnoLetivo = @AnoLetivo 
@@ -379,7 +379,7 @@ namespace API_HorarioProfessor.Controllers
             //    var query = @"SELECT Id, IdEscola, IdProfessor_fk, Linha, Coluna, Opcao, OpcaoDaSemana, 
             //          Tipo, Sigla, Ativo, DataCadastro, HoraCadastro, 
             //          DataInativado, HoraInativado, AnoLetivo, Periodo, IdEscola 
-            //          FROM OpcaoHorario
+            //          FROM opcaohorario
             //          WHERE AnoLetivo = @AnoLetivo 
             //          AND Periodo = @Periodo 
             //          AND Ativo = @Ativo 
@@ -461,7 +461,7 @@ namespace API_HorarioProfessor.Controllers
                 }
 
                 var query = @"SELECT ProfessorId, IdEscola, NomeProfessor, TurmasAtribuidas, Materia, QuantidadeAula, AnoLetivo, Periodo 
-                        FROM CadastroProfessor
+                        FROM hprof_cadastroprofessor
                         WHERE IdEscola = @IdEscola 
                           AND Periodo = @Periodo 
                           AND AnoLetivo = @AnoLetivo";
@@ -490,7 +490,7 @@ namespace API_HorarioProfessor.Controllers
                 var query = @"Id, IdEscola, Periodo, AnoLetivo, IdProfessor_fk, Linha, Coluna, Opcao, 
                               OpcaoDaSemana, Tipo, Sigla, Ativo, DataCadastro, HoraCadastro, DataInativado, 
                                 HoraInativado 
-                        FROM OpcaoHorario
+                        FROM opcaohorario
                         WHERE IdEscola = @IdEscola 
                         AND IdProfessor = @IdProfessor 
                         AND Periodo = @Periodo 

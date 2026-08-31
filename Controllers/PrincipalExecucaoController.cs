@@ -693,7 +693,7 @@ int registrosCopiados = await _opcoesProfessorService.CopiarOpcoesParaProcessame
             string query = @"
             SELECT ProfessorId, NomeProfessor, TurmasAtribuidas, Materia, QuantidadeAula, 
                    AnoLetivo, Periodo, fk_MateriaAulasPorAno, Modalidade
-            FROM cadastroprofessor
+            FROM hprof_cadastroprofessor
             WHERE AnoLetivo = @AnoLetivo 
               AND Periodo = @Periodo 
               AND IdEscola = @IdEscola
@@ -752,7 +752,7 @@ int registrosCopiados = await _opcoesProfessorService.CopiarOpcoesParaProcessame
                 // Etapa 1: Busca os IDs dos professores com base nos nomes
                 string queryProfessores = @"
             SELECT ProfessorId, NomeProfessor
-            FROM cadastroprofessor
+            FROM hprof_cadastroprofessor
             WHERE NomeProfessor IN @Nomes
               AND IdEscola = @IdEscola
               AND Periodo = @Periodo
@@ -769,7 +769,7 @@ int registrosCopiados = await _opcoesProfessorService.CopiarOpcoesParaProcessame
                 // Etapa 2: Busca as opções para cada professor
                 string queryOpcoes = @"
             SELECT OpcaoDaSemana
-            FROM opcaohorario
+            FROM hprof_opcaohorario
             WHERE IdProfessor_fk = @ProfessorId
               AND IdEscola = @IdEscola
               AND Periodo = @Periodo
@@ -1029,7 +1029,7 @@ int registrosCopiados = await _opcoesProfessorService.CopiarOpcoesParaProcessame
                 }
 
                 // Passo 1: Zerar os valores de QuantidadeOpcao1 e QuantidadeOpcao2 para todos os professores da escola, ano letivo e período selecionados
-                var resetQuery = @"UPDATE CadastroProfessor 
+                var resetQuery = @"UPDATE hprof_cadastroprofessor
                            SET QuantidadeOpcao1 = 0, 
                                QuantidadeOpcao2 = 0 
                            WHERE IdEscola = @IdEscola AND AnoLetivo = @AnoLetivo AND Periodo = @Periodo";
@@ -1058,7 +1058,7 @@ int registrosCopiados = await _opcoesProfessorService.CopiarOpcoesParaProcessame
                 foreach (var professor in quantidadeOpcoesPorProfessor)
                 {
                     // Fazer um único UPDATE para atualizar tanto QuantidadeOpcao1 quanto QuantidadeOpcao2
-                    var updateQuery = @"UPDATE CadastroProfessor 
+                    var updateQuery = @"UPDATE hprof_cadastroprofessor
                                 SET QuantidadeOpcao1 = @QuantidadeOpcao1, 
                                     QuantidadeOpcao2 = @QuantidadeOpcao2 
                                 WHERE ProfessorId = @ProfessorId AND AnoLetivo = @AnoLetivo AND Periodo = @Periodo";
@@ -1109,7 +1109,7 @@ int registrosCopiados = await _opcoesProfessorService.CopiarOpcoesParaProcessame
                 DateTime dataCadastroAtual = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, brtZone);
 
                 string query = @"SELECT DiaSemana, Linha, Coluna, Professor, DataCadastro 
-                         FROM HorarioDistribuicao
+                         FROM hprof_horariodistribuicao
                          WHERE IdEscola = @IdEscola AND AnoLetivo = @AnoLetivo AND Periodo = @Periodo
                          ORDER BY DiaSemana, Linha, Coluna";
 
@@ -1197,7 +1197,7 @@ int registrosCopiados = await _opcoesProfessorService.CopiarOpcoesParaProcessame
                 if (connection.State == System.Data.ConnectionState.Closed)
                     await connection.OpenAsync();
 
-                string query = @"UPDATE HorarioDistribuicao
+                string query = @"UPDATE hprof_horariodistribuicao
                          SET NomePlanilhaEscola = @NovoNomePlanilha
                          WHERE Id = @Id";
 

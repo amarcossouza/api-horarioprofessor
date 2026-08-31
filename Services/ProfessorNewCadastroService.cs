@@ -31,7 +31,7 @@ namespace API_HorarioProfessor.Services
 
                 var query =
                 @" SELECT ProfessorId, IdEscola, NomeProfessor, TurmasAtribuidas, Materia, QuantidadeAula, AnoLetivo, Periodo, QuantidadeOpcao1, QuantidadeOpcao2  " +
-                " FROM CadastroProfessor  " +
+                " FROM hprof_cadastroprofessor  " +
                 " where idEscola = @idEscola and AnoLetivo = @AnoLetivo and Periodo = @Periodo " +
                 " order by NomeProfessor";
                 var professores = await connection.QueryAsync<ProfessorNewCadastroDto>(query, new { idEscola = idEscola, AnoLetivo = Anoletivo, Periodo = Periodo });
@@ -108,7 +108,7 @@ namespace API_HorarioProfessor.Services
         {
             using (var connection = new MySqlConnection(_context.Database.GetConnectionString()))
             {
-                var query = @"SELECT * FROM CadastroProfessor WHERE ProfessorId = @ProfessorId";
+                var query = @"SELECT * FROM hprof_cadastroprofessor WHERE ProfessorId = @ProfessorId";
                 return await connection.QuerySingleOrDefaultAsync<ProfessorNewCadastroDto>(query, new { ProfessorId = professorId });
             }
         }
@@ -117,7 +117,7 @@ namespace API_HorarioProfessor.Services
         {
             using (var connection = new MySqlConnection(_context.Database.GetConnectionString()))
             {
-                var query = @"INSERT INTO CadastroProfessor (IdEscola, NomeProfessor, TurmasAtribuidas, Materia, QuantidadeAula, AnoLetivo, Periodo)
+                var query = @"INSERT INTO hprof_cadastroprofessor (IdEscola, NomeProfessor, TurmasAtribuidas, Materia, QuantidadeAula, AnoLetivo, Periodo)
                               VALUES (@IdEscola, @NomeProfessor, @TurmasAtribuidas, @Materia, @QuantidadeAula, @AnoLetivo, @Periodo)";
                 await connection.ExecuteAsync(query, professor);
             }
@@ -127,7 +127,7 @@ namespace API_HorarioProfessor.Services
         {
             using (var connection = new MySqlConnection(_context.Database.GetConnectionString()))
             {
-                var query = @"UPDATE CadastroProfessor SET 
+                var query = @"UPDATE hprof_cadastroprofessor SET
                                 IdEscola = @IdEscola,
                                 NomeProfessor = @NomeProfessor,
                                 TurmasAtribuidas = @TurmasAtribuidas,
@@ -144,7 +144,7 @@ namespace API_HorarioProfessor.Services
         {
             using (var connection = new MySqlConnection(_context.Database.GetConnectionString()))
             {
-                var query = @"DELETE FROM CadastroProfessor WHERE ProfessorId = @ProfessorId";
+                var query = @"DELETE FROM hprof_cadastroprofessor WHERE ProfessorId = @ProfessorId";
                 await connection.ExecuteAsync(query, new { ProfessorId = professorId });
             }
         }

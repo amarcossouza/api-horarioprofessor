@@ -24,34 +24,34 @@ builder.Services.AddSwaggerGen();
 var useProduction = builder.Configuration.GetValue<bool>("DatabaseConfig:ProductionConnection");
 var connectionString = builder.Configuration.GetConnectionString(useProduction ? "ProductionConnection" : "DesenvConnection");
 
-// ConfiguraÁ„o do contexto do banco de dados
+// Configura√ß√£o do contexto do banco de dados
 builder.Services.AddDbContext<HorarioProfessorDbContext>(options =>
     options.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 21)), mysqlOptions =>
     {
         mysqlOptions.EnableRetryOnFailure();
-        mysqlOptions.CommandTimeout(60); // Ajuste o tempo limite conforme necess·rio
+        mysqlOptions.CommandTimeout(60); // Ajuste o tempo limite conforme necess√°rio
     }));
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 21)), mysqlOptions =>
     {
         mysqlOptions.EnableRetryOnFailure();
-        mysqlOptions.CommandTimeout(60); // Ajuste o tempo limite conforme necess·rio
+        mysqlOptions.CommandTimeout(60); // Ajuste o tempo limite conforme necess√°rio
     }));
 
-// Registrar os serviÁos - Ajustar para Transient onde aplic·vel
+// Registrar os servi√ßos - Ajustar para Transient onde aplic√°vel
 builder.Services.AddTransient<IParametroDiarioOficialService, ParametroDiarioOficialService>();
 
-// Scoped garante que a mesma inst‚ncia da vari·vel ser· usada durante toda a requisiÁ„o
+// Scoped garante que a mesma inst√¢ncia da vari√°vel ser√° usada durante toda a requisi√ß√£o
 builder.Services.AddScoped<AppState>();
-// Registro dos serviÁos incluindo o EscolaService
+// Registro dos servi√ßos incluindo o EscolaService
 builder.Services.AddTransient<IEscolaService, EscolaService>();
 builder.Services.AddTransient<IUsuarioAcessoService, UsuarioAcessoService>();
 
-// Registrar o serviÁo IProfessorService e sua implementaÁ„o
+// Registrar o servi√ßo IProfessorService e sua implementa√ß√£o
 builder.Services.AddTransient<IProfessorService, ProfessorService>();
 
-// Registro do serviÁo de distribuiÁ„o do hor·rio do professor
+// Registro do servi√ßo de distribui√ß√£o do hor√°rio do professor
 builder.Services.AddTransient<PrincipalService>();
 
 // Registrar o LogService como Transient
@@ -79,19 +79,13 @@ builder.Host.ConfigureLogging(logging =>
     logging.AddDebug();
 });
 
-// Lendo a configuraÁ„o do ambiente
+// Lendo a configura√ß√£o do ambiente
 //var environment = builder.Configuration.GetValue<string>("Environment");
 //string pdfFilePath = builder.Configuration.GetSection("PdfFilePaths")[environment];
 
 var app = builder.Build();
 
-// InicializaÁ„o de AppState usando escopo manual
-// Isso È necess·rio porque AppState agora È Transient
-using (var scope = app.Services.CreateScope())
-{
-    var scopedAppState = scope.ServiceProvider.GetRequiredService<AppState>();
-    scopedAppState.InicializarProfessores(0, "", 0, 0);
-}
+// A distribui√ß√£o √© iniciada pelos endpoints, n√£o durante a inicializa√ß√£o da API.
 
 if (app.Environment.IsDevelopment())
 {
@@ -109,7 +103,7 @@ else if (app.Environment.IsProduction())
 app.UseSwagger();
 app.UseSwaggerUI();
 
-// N„o usar HTTPS, pois ainda n„o est· configurado
+// N√£o usar HTTPS, pois ainda n√£o est√° configurado
 // app.UseHttpsRedirection();
 
 app.UseAuthorization();
@@ -156,14 +150,14 @@ app.Run();
 //    options.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 21)), mysqlOptions =>
 //    {
 //        mysqlOptions.EnableRetryOnFailure();
-//        mysqlOptions.CommandTimeout(60); // Ajuste o tempo limite conforme necess·rio
+//        mysqlOptions.CommandTimeout(60); // Ajuste o tempo limite conforme necess√°rio
 //    }));
 
 //builder.Services.AddDbContext<ApplicationDbContext>(options =>
 //    options.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 21)), mysqlOptions =>
 //    {
 //        mysqlOptions.EnableRetryOnFailure();
-//        mysqlOptions.CommandTimeout(60); // Ajuste o tempo limite conforme necess·rio
+//        mysqlOptions.CommandTimeout(60); // Ajuste o tempo limite conforme necess√°rio
 //    }));
 
 //// Register the services classe principal que faz DISTRIBUICAO DE HORARIO
@@ -174,21 +168,21 @@ app.Run();
 
 //// **** Register the services ****
 //builder.Services.AddScoped<IParametroDiarioOficialService, ParametroDiarioOficialService>();
-//// Registro dos serviÁos incluindo o EscolaService
+//// Registro dos servi√ßos incluindo o EscolaService
 //builder.Services.AddScoped<IEscolaService, EscolaService>();
 //builder.Services.AddScoped<IUsuarioAcessoService, UsuarioAcessoService>();
 
-//// Registrar o serviÁo IProfessorService e sua implementaÁ„o
+//// Registrar o servi√ßo IProfessorService e sua implementa√ß√£o
 //builder.Services.AddScoped<IProfessorService, ProfessorService>();
 
-//// Registro do serviÁo distribuicao do horario professor
+//// Registro do servi√ßo distribuicao do horario professor
 //builder.Services.AddScoped<PrincipalService>();
 
 //// Registre o LogService como Scoped
 //builder.Services.AddScoped<LogService>();
 //builder.Services.AddScoped<IProfessorNewCadastroService, ProfessorNewCadastroService>();
 //builder.Services.AddScoped<ConfiguracaoAcaoController>();
-//builder.Services.AddScoped<IOpcoesProfessorService, OpcoesProfessorService>(); // Assegure-se de que est· correto
+//builder.Services.AddScoped<IOpcoesProfessorService, OpcoesProfessorService>(); // Assegure-se de que est√° correto
 //builder.Services.AddScoped<IProfessorService, ProfessorService>();
 
 //builder.Host.ConfigureLogging(logging =>
@@ -200,7 +194,7 @@ app.Run();
 //    // logging.AddFile(builder.Configuration.GetSection("Logging:File"));
 //});
 
-//// Lendo a configuraÁ„o do ambiente
+//// Lendo a configura√ß√£o do ambiente
 //var environment = builder.Configuration.GetValue<string>("Environment");
 //string pdfFilePath = builder.Configuration.GetSection("PdfFilePaths")[environment];
 
@@ -283,14 +277,14 @@ app.Run();
 //    options.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 21)), mysqlOptions =>
 //    {
 //        mysqlOptions.EnableRetryOnFailure();
-//        mysqlOptions.CommandTimeout(60); // Ajuste o tempo limite conforme necess·rio
+//        mysqlOptions.CommandTimeout(60); // Ajuste o tempo limite conforme necess√°rio
 //    }));
 
 //builder.Services.AddDbContext<ApplicationDbContext>(options =>
 //    options.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 21)), mysqlOptions =>
 //    {
 //        mysqlOptions.EnableRetryOnFailure();
-//        mysqlOptions.CommandTimeout(60); // Ajuste o tempo limite conforme necess·rio
+//        mysqlOptions.CommandTimeout(60); // Ajuste o tempo limite conforme necess√°rio
 //    }));
 
 
@@ -303,11 +297,11 @@ app.Run();
 
 //// **** Register the services ****
 //builder.Services.AddScoped<IParametroDiarioOficialService, ParametroDiarioOficialService>();
-//// Registro dos serviÁos incluindo o EscolaService
+//// Registro dos servi√ßos incluindo o EscolaService
 //builder.Services.AddScoped<IEscolaService, EscolaService>();
 //builder.Services.AddScoped<IUsuarioAcessoService, UsuarioAcessoService>();
 
-//// Registrar o serviÁo IProfessorService e sua implementaÁ„o
+//// Registrar o servi√ßo IProfessorService e sua implementa√ß√£o
 //builder.Services.AddScoped<IProfessorService, ProfessorService>();
 
 //// Registro do servico distribuicao do horario professor
@@ -317,7 +311,7 @@ app.Run();
 //builder.Services.AddScoped<LogService>();
 //builder.Services.AddScoped<IProfessorNewCadastroService, ProfessorNewCadastroService>();
 //builder.Services.AddScoped<ConfiguracaoAcaoController>();
-//builder.Services.AddScoped<IOpcoesProfessorService, OpcoesProfessorService>(); // Assegure-se de que est· correto
+//builder.Services.AddScoped<IOpcoesProfessorService, OpcoesProfessorService>(); // Assegure-se de que est√° correto
 //builder.Services.AddScoped<IProfessorService, ProfessorService>();
 
 
@@ -332,7 +326,7 @@ app.Run();
 //    // logging.AddFile(builder.Configuration.GetSection("Logging:File"));
 //});
 
-//// Lendo a configuraÁ„o do ambiente
+//// Lendo a configura√ß√£o do ambiente
 //var environment = builder.Configuration.GetValue<string>("Environment");
 //string pdfFilePath = builder.Configuration.GetSection("PdfFilePaths")[environment];
 
@@ -408,7 +402,7 @@ app.Run();
 //    options.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 21)), mysqlOptions =>
 //    {
 //        mysqlOptions.EnableRetryOnFailure();
-//        mysqlOptions.CommandTimeout(60); // Ajuste o tempo limite conforme necess·rio
+//        mysqlOptions.CommandTimeout(60); // Ajuste o tempo limite conforme necess√°rio
 //    }));
 
 //// Register the services classe principal que faz DISTRIBUICAO DE HORARIO
@@ -418,11 +412,11 @@ app.Run();
 
 //// **** Register the services ****
 //builder.Services.AddScoped<IParametroDiarioOficialService, ParametroDiarioOficialService>();
-//// Registro dos serviÁos incluindo o EscolaService
+//// Registro dos servi√ßos incluindo o EscolaService
 //builder.Services.AddScoped<IEscolaService, EscolaService>();
 //builder.Services.AddScoped<IUsuarioAcessoService, UsuarioAcessoService>();
 
-//// Registrar o serviÁo IProfessorService e sua implementaÁ„o
+//// Registrar o servi√ßo IProfessorService e sua implementa√ß√£o
 //builder.Services.AddScoped<IProfessorService, ProfessorService>();
 
 ////**** registro do servico distribuicao do horario professor */
@@ -439,7 +433,7 @@ app.Run();
 //     // logging.AddFile(builder.Configuration.GetSection("Logging:File"));
 //});
 
-//// Lendo a configuraÁ„o do ambiente
+//// Lendo a configura√ß√£o do ambiente
 //var environment = builder.Configuration.GetValue<string>("Environment");
 //string pdfFilePath = builder.Configuration.GetSection("PdfFilePaths")[environment];
 

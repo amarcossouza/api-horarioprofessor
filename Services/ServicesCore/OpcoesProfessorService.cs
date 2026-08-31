@@ -29,7 +29,7 @@ namespace API_HorarioProfessor.Services.ServicesCore
                 var query = @"SELECT Id, IdEscola, IdProfessor_fk, Linha, Coluna, Opcao, OpcaoDaSemana, 
                       Tipo, Sigla, Ativo, DataCadastro, HoraCadastro, 
                       DataInativado, HoraInativado, AnoLetivo, Periodo, IdEscola 
-                      FROM OpcaoHorario
+                      FROM hprof_opcaohorario
                       WHERE AnoLetivo = @AnoLetivo 
                       AND Periodo = @Periodo 
                       AND Ativo = @Ativo 
@@ -60,7 +60,7 @@ namespace API_HorarioProfessor.Services.ServicesCore
                 var query = @"SELECT Id, IdEscola, IdProfessor_fk, Linha, Coluna, Opcao, OpcaoDaSemana, 
                       Tipo, Sigla, Ativo, DataCadastro, HoraCadastro, 
                       DataInativado, HoraInativado, AnoLetivo, Periodo, IdEscola 
-                      FROM OpcaoHorarioProcessamento
+                      FROM hprof_opcaohorarioprocessamento
                       WHERE AnoLetivo = @AnoLetivo 
                       AND Periodo = @Periodo 
                       AND Ativo = @Ativo 
@@ -88,7 +88,7 @@ namespace API_HorarioProfessor.Services.ServicesCore
         //////            await connection.OpenAsync();
         //////        }
 
-        //////        var query = @"DELETE FROM OpcaoHorarioProcessamento
+        //////        var query = @"DELETE FROM opcaohorarioprocessamento
         //////              WHERE AnoLetivo = @AnoLetivo
         //////              AND Periodo = @Periodo
         //////              AND Ativo = @Ativo
@@ -121,7 +121,7 @@ namespace API_HorarioProfessor.Services.ServicesCore
                     try
                     {
                         var query = @"
-                    DELETE FROM OpcaoHorarioProcessamento
+                    DELETE FROM hprof_opcaohorarioprocessamento
                     WHERE AnoLetivo = @AnoLetivo
                     AND Periodo = @Periodo
                     AND Ativo = @Ativo
@@ -177,7 +177,7 @@ namespace API_HorarioProfessor.Services.ServicesCore
 
         //////        // Query de DELETE com a adição da lista de professores
         //////        var query = $@"
-        //////    DELETE FROM OpcaoHorarioProcessamento
+        //////    DELETE FROM opcaohorarioprocessamento
         //////    WHERE AnoLetivo = @AnoLetivo
         //////    AND Periodo = @Periodo
         //////    AND Ativo = @Ativo
@@ -217,7 +217,7 @@ namespace API_HorarioProfessor.Services.ServicesCore
 
                         // Query de DELETE com a lista de professores
                         var query = $@"
-                    DELETE FROM OpcaoHorarioProcessamento
+                    DELETE FROM hprof_opcaohorarioprocessamento
                     WHERE AnoLetivo = @AnoLetivo
                     AND Periodo = @Periodo
                     AND Ativo = @Ativo
@@ -262,13 +262,13 @@ namespace API_HorarioProfessor.Services.ServicesCore
 
         //////        // Consulta para inserir na tabela OpcaoHorarioProcessamento os dados da tabela OpcaoHorario
         //////        var query = @"
-        //////    INSERT INTO OpcaoHorarioProcessamento (IdEscola, IdProfessor_fk, Linha, Coluna, Opcao, OpcaoDaSemana, 
+        //////    INSERT INTO opcaohorarioprocessamento (IdEscola, IdProfessor_fk, Linha, Coluna, Opcao, OpcaoDaSemana,
         //////        Tipo, Sigla, Ativo, DataCadastro, HoraCadastro, 
         //////        DataInativado, HoraInativado, AnoLetivo, Periodo)
         //////    SELECT IdEscola, IdProfessor_fk, Linha, Coluna, Opcao, OpcaoDaSemana, 
         //////        Tipo, Sigla, Ativo, DataCadastro, HoraCadastro, 
         //////        DataInativado, HoraInativado, AnoLetivo, Periodo
-        //////    FROM OpcaoHorario
+        //////    FROM opcaohorario
         //////    WHERE AnoLetivo = @AnoLetivo 
         //////    AND Periodo = @Periodo 
         //////    AND Ativo = @Ativo 
@@ -305,13 +305,13 @@ namespace API_HorarioProfessor.Services.ServicesCore
                     {
                         // Consulta para inserir na tabela OpcaoHorarioProcessamento os dados da tabela OpcaoHorario
                         var query = @"
-                    INSERT INTO OpcaoHorarioProcessamento (IdEscola, IdProfessor_fk, Linha, Coluna, Opcao, OpcaoDaSemana, 
+                    INSERT INTO hprof_opcaohorarioprocessamento (IdEscola, IdProfessor_fk, Linha, Coluna, Opcao, OpcaoDaSemana,
                         Tipo, Sigla, Ativo, DataCadastro, HoraCadastro, 
                         DataInativado, HoraInativado, AnoLetivo, Periodo)
                     SELECT IdEscola, IdProfessor_fk, Linha, Coluna, Opcao, OpcaoDaSemana, 
                         Tipo, Sigla, Ativo, DataCadastro, HoraCadastro, 
                         DataInativado, HoraInativado, AnoLetivo, Periodo
-                    FROM OpcaoHorario
+                    FROM hprof_opcaohorario
                     WHERE AnoLetivo = @AnoLetivo 
                     AND Periodo = @Periodo 
                     AND Ativo = @Ativo 
@@ -371,13 +371,13 @@ namespace API_HorarioProfessor.Services.ServicesCore
 
         //////            // Consulta para inserir na tabela OpcaoHorarioProcessamento os dados da tabela OpcaoHorario
         //////            var query = $@"
-        //////    INSERT INTO OpcaoHorarioProcessamento (IdEscola, IdProfessor_fk, Linha, Coluna, Opcao, OpcaoDaSemana, 
+        //////    INSERT INTO opcaohorarioprocessamento (IdEscola, IdProfessor_fk, Linha, Coluna, Opcao, OpcaoDaSemana,
         //////        Tipo, Sigla, Ativo, DataCadastro, HoraCadastro, 
         //////        DataInativado, HoraInativado, AnoLetivo, Periodo)
         //////    SELECT IdEscola, IdProfessor_fk, Linha, Coluna, Opcao, OpcaoDaSemana, 
         //////        Tipo, Sigla, Ativo, DataCadastro, HoraCadastro, 
         //////        DataInativado, HoraInativado, AnoLetivo, Periodo
-        //////    FROM OpcaoHorario
+        //////    FROM opcaohorario
         //////    WHERE AnoLetivo = @AnoLetivo 
         //////    AND Periodo = @Periodo 
         //////    AND Ativo = @Ativo 
@@ -425,7 +425,7 @@ namespace API_HorarioProfessor.Services.ServicesCore
 
                         // Consulta de exclusão antes de inserção (caso necessário)
                         var queryExclusao = @"
-                    DELETE FROM OpcaoHorarioProcessamento
+                    DELETE FROM hprof_opcaohorarioprocessamento
                     WHERE AnoLetivo = @AnoLetivo
                     AND Periodo = @Periodo
                     AND IdEscola = @IdEscola
@@ -441,13 +441,13 @@ namespace API_HorarioProfessor.Services.ServicesCore
 
                         // Inserção dos dados na tabela OpcaoHorarioProcessamento
                         var queryInsercao = $@"
-                    INSERT INTO OpcaoHorarioProcessamento (IdEscola, IdProfessor_fk, Linha, Coluna, Opcao, OpcaoDaSemana, 
+                    INSERT INTO hprof_opcaohorarioprocessamento (IdEscola, IdProfessor_fk, Linha, Coluna, Opcao, OpcaoDaSemana,
                         Tipo, Sigla, Ativo, DataCadastro, HoraCadastro, 
                         DataInativado, HoraInativado, AnoLetivo, Periodo)
                     SELECT IdEscola, IdProfessor_fk, Linha, Coluna, Opcao, OpcaoDaSemana, 
                         Tipo, Sigla, Ativo, DataCadastro, HoraCadastro, 
                         DataInativado, HoraInativado, AnoLetivo, Periodo
-                    FROM OpcaoHorario
+                    FROM hprof_opcaohorario
                     WHERE AnoLetivo = @AnoLetivo 
                     AND Periodo = @Periodo 
                     AND Ativo = @Ativo 

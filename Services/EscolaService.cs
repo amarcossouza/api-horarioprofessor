@@ -45,11 +45,11 @@ namespace API_HorarioProfessor.Services
         }
 
         public async Task<IEnumerable<UsuarioAcesso>> GetCustomUserAccessQueryAsync(int escolaId)
-        {                   // select '0' UsuarioAcessoId, EscolaId, UsuarioAcesso Usuario, Senha, now() DataCadastro from Escolas
+        {                   // select '0' UsuarioAcessoId, EscolaId, UsuarioAcesso Usuario, Senha, now() DataCadastro from hprof_escolas
             var result = await _context.UsuariosAcesso
-                .FromSqlRaw(@"SELECT UsuarioAcessoId, EscolaId, Usuario, Senha, DataCadastro FROM usuariosacesso WHERE EscolaId = {0}
+                .FromSqlRaw(@"SELECT UsuarioAcessoId, EscolaId, Usuario, Senha, DataCadastro FROM hprof_usuariosacesso WHERE EscolaId = {0}
                               UNION
-                              SELECT 0 UsuarioAcessoId, EscolaId, UsuarioAcesso AS Usuario, Senha, now() DataCadastro FROM escolas WHERE EscolaId = {0}
+                              SELECT 0 UsuarioAcessoId, EscolaId, UsuarioAcesso AS Usuario, Senha, now() DataCadastro FROM hprof_escolas WHERE EscolaId = {0}
                               ORDER BY EscolaId", escolaId)
                 .ToListAsync();
 
@@ -57,11 +57,11 @@ namespace API_HorarioProfessor.Services
         }
 
         public async Task<IEnumerable<UsuarioAcesso>> GetCustomUserAllAccessQuery(string usuario, string senha)
-        {                   // select '0' UsuarioAcessoId, EscolaId, UsuarioAcesso Usuario, Senha, now() DataCadastro from Escolas
+        {                   // select '0' UsuarioAcessoId, EscolaId, UsuarioAcesso Usuario, Senha, now() DataCadastro from hprof_escolas
             var result = await _context.UsuariosAcesso
-                .FromSqlRaw(@"SELECT UsuarioAcessoId, EscolaId, Usuario, Senha, DataCadastro FROM usuariosacesso WHERE usuario = {0} and Senha = {1}
+                .FromSqlRaw(@"SELECT UsuarioAcessoId, EscolaId, Usuario, Senha, DataCadastro FROM hprof_usuariosacesso WHERE usuario = {0} and Senha = {1}
                               UNION
-                              SELECT 0 UsuarioAcessoId, EscolaId, UsuarioAcesso AS Usuario, Senha, now() DataCadastro FROM escolas WHERE UsuarioAcesso = {0} and Senha = {1}
+                              SELECT 0 UsuarioAcessoId, EscolaId, UsuarioAcesso AS Usuario, Senha, now() DataCadastro FROM hprof_escolas WHERE UsuarioAcesso = {0} and Senha = {1}
                               ORDER BY EscolaId", usuario,senha)
                 .ToListAsync();
 

@@ -197,7 +197,7 @@ namespace API_HorarioProfessor.Services
 
                 var query = @"SELECT Id, IdEscola, Periodo, AnoLetivo, IdProfessor_fk, Linha, Coluna, Opcao, OpcaoDaSemana, 
                       Tipo, Sigla, Ativo, DataCadastro, HoraCadastro, DataInativado, HoraInativado
-                      FROM OpcaoHorario
+                      FROM hprof_opcaohorario
                       WHERE AnoLetivo = @AnoLetivo 
                       AND Periodo = @Periodo 
                       AND Ativo = @Ativo 
@@ -258,7 +258,7 @@ namespace API_HorarioProfessor.Services
 
                 var query = @"SELECT Id, IdEscola, Periodo, AnoLetivo, IdProfessor_fk, Linha, Coluna, Opcao, OpcaoDaSemana, 
                       Tipo, Sigla, Ativo, DataCadastro, HoraCadastro, DataInativado, HoraInativado
-                      FROM OpcaoHorario
+                      FROM hprof_opcaohorario
                       WHERE AnoLetivo = @AnoLetivo 
                       AND Periodo = @Periodo 
                       AND Ativo = @Ativo 

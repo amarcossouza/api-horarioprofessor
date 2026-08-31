@@ -24,7 +24,7 @@ namespace API_HorarioProfessor.Services.CoreServices.MetodosAuxiliares
                 }
 
                 var query = @"SELECT TurmaId, IdEscola, Periodo, AnoLetivo, Turmas, Polivalente
-                          FROM TurmaPadraoEscola
+                          FROM hprof_turmapadraoescola
                           WHERE IdEscola = @IdEscola
                           AND Periodo = @Periodo
                           AND AnoLetivo = @AnoLetivo

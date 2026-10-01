@@ -59,3 +59,11 @@ Uma entrega somente pode ser marcada como concluída quando:
 5. os dados existentes foram preservados;
 6. existe teste do fluxo principal e do retorno de erro;
 7. os arquivos foram versionados no Git, sem credenciais e sem artefatos compilados.
+
+## 7. Fluxo de branches durante o desenvolvimento
+
+- Cada projeto deve permanecer na branch local `codex/novo-fechamento` durante a construção dos blocos planejados.
+- Ao concluir uma parte testável, criar um commit local pequeno e descritivo no repositório correspondente.
+- Não executar `merge`, criar pull request ou enviar novos commits à nuvem durante a sequência de desenvolvimento, salvo pedido explícito do responsável.
+- O merge será realizado posteriormente, de forma controlada, somente depois que os blocos selecionados estiverem compilados, testados e registrados no roteiro.
+- Mudanças locais de configuração, credenciais e arquivos desconhecidos do usuário não devem ser incluídas nos commits.

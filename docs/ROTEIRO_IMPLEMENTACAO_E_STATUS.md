@@ -296,13 +296,13 @@ Esses arquivos serão cobertos por testes de caracterização e não serão ampl
 
 **Evidências de conclusão local em 01/10/2026:**
 
-- API principal: commit `38fbc9c` — documentação e migrações Flyway V1-V5;
-- frontend MVC: commit `959c33e` — integração da tela e do cliente de cenários;
+- API principal: commits `38fbc9c` e `1e20931` enviados para `origin/codex/novo-fechamento` — documentação, migrações Flyway V1-V5 e atualização do roteiro;
+- frontend MVC: commit `959c33e` enviado para `origin/codex/novo-fechamento` — integração da tela e do cliente de cenários;
 - motor de cenários: commit `6357fc1` — fonte do motor e testes iniciais;
 - recompilação completa concluída com zero erros nos três projetos; o novo motor ficou com zero avisos, enquanto a API principal apresentou 290 avisos legados e o frontend 452 avisos legados;
 - `appsettings.Development.json`, `flyway.conf`, `bin/` e `obj/` não foram incluídos nos novos commits;
 - nenhuma credencial foi adicionada pelas alterações desta entrega;
-- pendência operacional: cadastrar o remoto do repositório `api-cenarios` e enviá-lo à nuvem.
+- pendência operacional: criar/cadastrar o remoto do repositório `api-cenarios` e enviá-lo à nuvem; o endereço esperado foi verificado e ainda não existe no GitHub.
 
 **Risco identificado:** a API principal e o frontend já possuíam credenciais antigas versionadas antes desta entrega. A remoção do código atual e a rotação dessas credenciais serão tratadas em uma tarefa própria, usando configuração segura, sem interromper a conexão utilizada pelo desenvolvimento.
 
@@ -530,7 +530,7 @@ Não devemos iniciar V6/V7 ou ampliar o solver antes de concluir essa cobertura,
 | 31/08/2026 | Planejamento, Flyway V1-V5 e protótipo dos blocos 1-9 | Código inicial criado | Consolidar e provar integração |
 | 01/10/2026 | Flyway, build e verificação das três aplicações | V1-V5 `Success`; 3 builds sem erros; APIs e frontend ativos | Proteger fonte e criar testes |
 | 01/10/2026 | Consulta de cenário e validação de versão existente | Banco acessível; 280/280 aulas; 0 violações; 18 avisos | Testar três alternativas em caso real |
-| 01/10/2026 | Proteção local dos três projetos e testes iniciais de caracterização | Commits `38fbc9c`, `959c33e` e `6357fc1`; 7/7 testes aprovados; três builds sem erros; 290/452 avisos legados registrados; motor sem avisos | Completar testes de comparação, persistência, restauração e API integrada |
+| 01/10/2026 | Proteção dos três projetos e testes iniciais de caracterização | API e frontend enviados à nuvem; motor protegido em commit local `6357fc1`, aguardando criação do remoto; 7/7 testes aprovados; três builds sem erros; 290/452 avisos legados registrados; motor sem avisos | Completar testes de comparação, persistência, restauração e API integrada |
 
 ## 10. Como atualizar este documento
 

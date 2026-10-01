@@ -74,14 +74,14 @@ Isso representa um **protótipo funcional adiantado**, não a conclusão formal 
 
 ### Painel mestre — 11 blocos até a conclusão
 
-O roteiro completo possui **11 blocos, numerados de 0 a 10**. Os **Blocos 0, 1 e 2 foram concluídos** e o próximo trabalho é o **Bloco 3**, com protótipos parciais já existentes para os blocos 5, 6 e 9. O envio do novo repositório `api-cenarios` à nuvem depende apenas da definição de seu endereço remoto.
+O roteiro completo possui **11 blocos, numerados de 0 a 10**. Os **Blocos 0, 1, 2 e 3 foram concluídos** e o próximo trabalho é o **Bloco 4**, com protótipos parciais já existentes para os blocos 5, 6 e 9. O envio do novo repositório `api-cenarios` à nuvem depende apenas da definição de seu endereço remoto.
 
 | Bloco | Fase | Situação em 01/10/2026 | Entrega que encerra a fase |
 |---:|---|---|---|
 | 0 | Proteção e linha de base | **Concluído localmente** | Três fontes em Git, novos arquivos sem segredos e três builds reproduzíveis; remoto do `api-cenarios` ainda deve ser cadastrado |
 | 1 | Testes de caracterização | **Concluído — 22 testes aprovados** | Testes preservam validador, solver, comparação, versões, restauração, endpoints, concessões e ajustes localizados |
 | 2 | Encapsulamento seguro | **Concluído — 36 testes aprovados** | Código existente preservado e acessado por adapters/fachadas e endpoint leve |
-| 3 | Persistência completa | **Em andamento — 41 testes aprovados** | V6/V7 aplicadas; três alternativas e publicação persistidas |
+| 3 | Persistência completa | **Concluído — 42 testes e ciclo MySQL aprovados** | V6/V7 aplicadas; três alternativas e publicação persistidas |
 | 4 | Snapshot completo das regras | Pendente | Motor recebe matriz, IDs, bloqueios, preferências, travas e origem |
 | 5 | Três caminhos de fechamento | Protótipo parcial | Três soluções distintas, válidas, persistidas e explicadas |
 | 6 | Viabilidade e concessões | Protótipo parcial | Sistema informa exatamente quais restrições liberar para fechar 100% |
@@ -90,7 +90,7 @@ O roteiro completo possui **11 blocos, numerados de 0 a 10**. Os **Blocos 0, 1 e
 | 9 | Frontend final | Protótipo parcial | Tela modular para comparar, decidir, publicar, restaurar e desfazer |
 | 10 | Piloto e aceite | Pendente | Caso real aprovado, reinício/restauração testados e aceite do gestor |
 
-**Contagem objetiva:** são 11 blocos no total. Os Blocos 0, 1 e 2 estão concluídos; restam 8 blocos formais, do Bloco 3 ao aceite final. Como parte do código futuro já existe, alguns blocos serão trabalho de teste, correção e organização, não implementação do zero.
+**Contagem objetiva:** são 11 blocos no total. Os Blocos 0 a 3 estão concluídos; restam 7 blocos formais, do Bloco 4 ao aceite final. Como parte do código futuro já existe, alguns blocos serão trabalho de teste, correção e organização, não implementação do zero.
 
 ### Marcos de controle
 
@@ -394,7 +394,7 @@ As tabelas V1 a V5 existem. O fonte mostrou uma lacuna: a publicação atual alt
 
 **Progresso em 01/10/2026:** V6 e V7 foram executadas pelo gestor no banco de desenvolvimento; Flyway confirmou o schema `droplexdb` na versão 7. No `api-cenarios`, foram implementados repositórios Dapper parametrizados para alternativas e publicações, sem Entity Framework. As três alternativas são gravadas na mesma transação. A adoção bloqueia a candidata, cria uma nova `hprof_cenarioversao` imutável, marca a escolhida como `ADOTADA` e as demais como `DESCARTADA`, tudo atomicamente e sem exclusão. A publicação encerra a vigente como `SUBSTITUIDA`; revogação e restauração preservam o histórico, e restaurar cria uma nova publicação apontando para a versão histórica. Foram adicionados controllers leves para listar/adotar alternativas e publicar/restaurar/revogar. Suíte completa: 41/41 testes aprovados, build sem erros e sem avisos.
 
-**Para concluir formalmente o Bloco 3:** executar um teste integrado contra o MySQL de desenvolvimento pelos endpoints, comprovando criação das três alternativas, adoção, publicação, restauração e leitura após reinício do serviço. Nenhuma nova migração é necessária para esse teste.
+**Conclusão formal em 01/10/2026:** o endpoint de geração foi ligado a `hprof_simulacao` e `hprof_simulacaoalternativa` por `SimulacaoPersistenciaService` e repositórios Dapper. No cenário de desenvolvimento 3, versão-base 3, foi criada a simulação 1 com três alternativas e 280/280 aulas. A alternativa 1 foi adotada e criou a versão imutável 4; ALT_A ficou `ADOTADA`, ALT_B e ALT_C ficaram `DESCARTADA`. Foram criadas três publicações auditáveis: publicação inicial, substituição e restauração. Após reiniciar o `api-cenarios`, a publicação 3 permaneceu `VIGENTE`, apontando para a versão 4, e as três publicações continuaram no histórico. O teste real também identificou e corrigiu a conversão `DateOnly` do Dapper/MySQL. Suíte final: 42/42 testes aprovados, zero erros de compilação. O Bloco 3 está concluído.
 
 ### Bloco 4 — Carregamento completo das regras reais
 
@@ -531,9 +531,9 @@ Não iniciaremos novas regras diretamente nos arquivos grandes. A ordem é:
 
 ## 8. Próximo passo exato
 
-**Próxima tarefa:** concluir o Bloco 3 com um teste integrado no MySQL de desenvolvimento: iniciar o `api-cenarios`, persistir três alternativas vinculadas a uma simulação real, adotar uma, publicar a versão, restaurar uma publicação histórica e reiniciar o serviço para confirmar a leitura. Se esse teste passar, registrar as evidências e avançar para o Bloco 4 — snapshot completo das regras reais.
+**Próxima tarefa:** iniciar o Bloco 4 mapeando, sem alterar o fluxo legado, todos os dados de origem necessários ao snapshot: IDs reais de professores, turmas e disciplinas; cargas; bloqueios; preferências; travas; regras; escola, ano e período. Depois criar `RegraSnapshotV1` e testes de caracterização que provem que nenhuma informação usada pelo processamento atual se perde na conversão.
 
-Não ampliar o solver antes dessa comprovação. O código e o schema já estão prontos; falta provar o ciclo persistido ponta a ponta no banco real.
+Não ampliar o solver ainda. Primeiro o snapshot precisa transportar integralmente as regras reais para que as próximas três soluções respeitem os mesmos dados do sistema atual.
 
 ## 9. Diário resumido
 
@@ -551,6 +551,7 @@ Não ampliar o solver antes dessa comprovação. O código e o schema já estão
 | 01/10/2026 | Migração completa do microsserviço para Dapper | Commit local `ac8f41e`; EF, Pomelo e DbContext removidos; Dapper + MySqlConnector; 31/31 testes; build sem avisos | Criar mapper canônico e fachada do fechamento inteligente |
 | 01/10/2026 | Conclusão do encapsulamento seguro | Commits locais `9171de9` e `83b7d2b`; mapper, fachada e endpoint leve concluídos; 36/36 testes; build sem avisos | Iniciar Flyway V6/V7 e persistência Dapper do Bloco 3 |
 | 01/10/2026 | Persistência Dapper do Bloco 3 | Flyway V6/V7 aplicado pelo gestor; alternativas, adoção transacional, publicação, revogação e restauração implementadas; 41/41 testes; sem EF e sem exclusão de histórico | Executar ciclo integrado no MySQL e comprovar restauração após reinício |
+| 01/10/2026 | Conclusão integrada do Bloco 3 | Simulação 1, cenário 3: três alternativas persistidas, versão 4 adotada, três publicações históricas e restauração confirmada após reinício; correção `DateOnly`; 42/42 testes | Iniciar Bloco 4 pelo inventário completo das regras e dados de origem |
 
 ## 10. Como atualizar este documento
 

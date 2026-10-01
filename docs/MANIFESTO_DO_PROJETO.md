@@ -31,6 +31,9 @@ Este manifesto contém regras obrigatórias para qualquer pessoa ou inteligênci
 - Antes de `migrate`, executar `info` e `validate`; depois, executar `info` novamente e registrar o resultado.
 - Usar a tabela de histórico exclusiva `hprof_flyway_schema_history`.
 - Senhas e strings de conexão não devem ser commitadas no Git.
+- O microsserviço `api-cenarios` deve usar exclusivamente Dapper com `MySqlConnector` para acesso ao banco. Entity Framework e `DbContext` são proibidos nesse microsserviço.
+- O Flyway é o único responsável por criar e alterar estruturas do banco; o Dapper executa somente as consultas e comandos da aplicação.
+- A persistência deve ser dividida em repositórios pequenos com SQL explícito, parametrizado e sem regra de negócio.
 
 ## 4. Componentes oficiais
 

@@ -362,6 +362,10 @@ Esses arquivos serão cobertos por testes de caracterização e não serão ampl
 
 **Progresso em 01/10/2026:** criados `GradeSnapshotV1`, `IProcessamentoLegadoAdapter` e `ProcessamentoLegadoAdapter`. O adapter converte matrizes legadas em `SolverInput`, calcula a carga já distribuída, copia bloqueios, protege posições existentes e não modifica os objetos de entrada. Commit local `e061f32`; suíte completa com 25/25 testes aprovados.
 
+Também foram criados `ISolverExistenteAdapter`, `SolverExistenteAdapter`, `IValidadorExistenteAdapter` e `ValidadorExistenteAdapter` no microsserviço. Eles delegam para o solver e o validador atuais sem duplicar regras. Commit local `4a1c829`; 29/29 testes aprovados.
+
+**Decisão arquitetural aplicada:** a persistência do `api-cenarios` usa exclusivamente Dapper + `MySqlConnector`. Entity Framework, Pomelo e `DbContext` foram removidos do microsserviço. Flyway continua sendo o único mecanismo de evolução do schema. O acesso usa `IDbConnectionFactory`, `ICenarioRepository` e SQL explícito parametrizado. Commit local `ac8f41e`; 31/31 testes aprovados; recompilação completa com zero erros e zero avisos.
+
 ### Bloco 3 — Persistência completa das alternativas e publicação
 
 As tabelas V1 a V5 existem. O fonte mostrou uma lacuna: a publicação atual altera o status e registra evento, mas não mantém uma entidade própria apontando claramente qual versão está vigente. As três alternativas também precisam existir no banco antes da escolha.
@@ -521,7 +525,7 @@ Não iniciaremos novas regras diretamente nos arquivos grandes. A ordem é:
 
 ## 8. Próximo passo exato
 
-**Próxima tarefa:** continuar o Bloco 2 criando `ISolverExistenteAdapter`/`SolverExistenteAdapter` e `IValidadorExistenteAdapter`/`ValidadorExistenteAdapter`, com testes que comprovem a delegação para as classes atuais sem duplicar suas regras.
+**Próxima tarefa:** continuar o Bloco 2 criando `GradeCanonicalMapper` e `FechamentoInteligenteFacade` para coordenar adapter legado, validador e solver por interfaces, mantendo controllers leves e sem duplicar regras.
 
 Não devemos iniciar V6/V7 ou ampliar o solver antes de concluir essa cobertura, pois o motor atual já compila e já valida uma grade real; precisamos preservar esse comportamento durante a extensão.
 
@@ -537,6 +541,8 @@ Não devemos iniciar V6/V7 ou ampliar o solver antes de concluir essa cobertura,
 | 01/10/2026 | Fluxo HTTP integrado do motor de cenários | Commit local `3d7d911`; 14/14 testes aprovados; criação, versões, restauração, validação e comparação comprovadas por API; zero avisos no novo motor | Cobrir preferências negociáveis, posições travadas e ajuste localizado |
 | 01/10/2026 | Conclusão dos testes de caracterização | Commit local `3d2b706`; 22/22 testes aprovados; preferências flexíveis, concessões, travas, ajuste localizado, sai-e-volta e estados do solver cobertos | Iniciar adapter de entrada legado → `SolverInput` no Bloco 2 |
 | 01/10/2026 | Primeiro adapter do Bloco 2 | Commit local `e061f32`; snapshot legado convertido para contrato `SolverInput`; 25/25 testes aprovados | Criar adapters estáveis do solver e do validador existentes |
+| 01/10/2026 | Adapters do solver/validador e decisão de persistência leve | Commit local `4a1c829`; 29/29 testes aprovados; definido Dapper + MySqlConnector e Flyway, sem novos DbContexts | Migrar o repositório de cenários/versões para Dapper |
+| 01/10/2026 | Migração completa do microsserviço para Dapper | Commit local `ac8f41e`; EF, Pomelo e DbContext removidos; Dapper + MySqlConnector; 31/31 testes; build sem avisos | Criar mapper canônico e fachada do fechamento inteligente |
 
 ## 10. Como atualizar este documento
 

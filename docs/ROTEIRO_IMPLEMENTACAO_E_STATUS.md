@@ -74,14 +74,14 @@ Isso representa um **protótipo funcional adiantado**, não a conclusão formal 
 
 ### Painel mestre — 11 blocos até a conclusão
 
-O roteiro completo possui **11 blocos, numerados de 0 a 10**. Os **Blocos 0 e 1 foram concluídos** e o próximo trabalho é o **Bloco 2**, com protótipos parciais já existentes para os blocos 5, 6 e 9. O envio do novo repositório `api-cenarios` à nuvem depende apenas da definição de seu endereço remoto.
+O roteiro completo possui **11 blocos, numerados de 0 a 10**. Os **Blocos 0, 1 e 2 foram concluídos** e o próximo trabalho é o **Bloco 3**, com protótipos parciais já existentes para os blocos 5, 6 e 9. O envio do novo repositório `api-cenarios` à nuvem depende apenas da definição de seu endereço remoto.
 
 | Bloco | Fase | Situação em 01/10/2026 | Entrega que encerra a fase |
 |---:|---|---|---|
 | 0 | Proteção e linha de base | **Concluído localmente** | Três fontes em Git, novos arquivos sem segredos e três builds reproduzíveis; remoto do `api-cenarios` ainda deve ser cadastrado |
 | 1 | Testes de caracterização | **Concluído — 22 testes aprovados** | Testes preservam validador, solver, comparação, versões, restauração, endpoints, concessões e ajustes localizados |
-| 2 | Encapsulamento seguro | **Em andamento — adapter legado concluído** | Código existente preservado e acessado por adapters/fachadas |
-| 3 | Persistência completa | Pendente | V6/V7 aplicadas; três alternativas e publicação persistidas |
+| 2 | Encapsulamento seguro | **Concluído — 36 testes aprovados** | Código existente preservado e acessado por adapters/fachadas e endpoint leve |
+| 3 | Persistência completa | **Próximo** | V6/V7 aplicadas; três alternativas e publicação persistidas |
 | 4 | Snapshot completo das regras | Pendente | Motor recebe matriz, IDs, bloqueios, preferências, travas e origem |
 | 5 | Três caminhos de fechamento | Protótipo parcial | Três soluções distintas, válidas, persistidas e explicadas |
 | 6 | Viabilidade e concessões | Protótipo parcial | Sistema informa exatamente quais restrições liberar para fechar 100% |
@@ -90,7 +90,7 @@ O roteiro completo possui **11 blocos, numerados de 0 a 10**. Os **Blocos 0 e 1 
 | 9 | Frontend final | Protótipo parcial | Tela modular para comparar, decidir, publicar, restaurar e desfazer |
 | 10 | Piloto e aceite | Pendente | Caso real aprovado, reinício/restauração testados e aceite do gestor |
 
-**Contagem objetiva:** são 11 blocos no total. Os Blocos 0 e 1 estão concluídos; restam 9 blocos formais, do Bloco 2 ao aceite final. Como parte do código futuro já existe, alguns blocos serão trabalho de teste, correção e organização, não implementação do zero.
+**Contagem objetiva:** são 11 blocos no total. Os Blocos 0, 1 e 2 estão concluídos; restam 8 blocos formais, do Bloco 3 ao aceite final. Como parte do código futuro já existe, alguns blocos serão trabalho de teste, correção e organização, não implementação do zero.
 
 ### Marcos de controle
 
@@ -366,6 +366,8 @@ Também foram criados `ISolverExistenteAdapter`, `SolverExistenteAdapter`, `IVal
 
 **Decisão arquitetural aplicada:** a persistência do `api-cenarios` usa exclusivamente Dapper + `MySqlConnector`. Entity Framework, Pomelo e `DbContext` foram removidos do microsserviço. Flyway continua sendo o único mecanismo de evolução do schema. O acesso usa `IDbConnectionFactory`, `ICenarioRepository` e SQL explícito parametrizado. Commit local `ac8f41e`; 31/31 testes aprovados; recompilação completa com zero erros e zero avisos.
 
+**Conclusão em 01/10/2026:** criados `GradeCanonicalMapper`, `FechamentoInteligenteFacade` e `FechamentoInteligenteController`. A fachada normaliza o snapshot, valida pelas regras existentes e chama o solver por interfaces. Pendências `R4_PENDENCIA` são solucionáveis; conflitos obrigatórios impedem o solver. O endpoint `POST /api/fechamento-inteligente/analisar-e-fechar` foi comprovado por teste HTTP. Commits locais `9171de9` e `83b7d2b`; 36/36 testes aprovados; build com zero erros e zero avisos. O Bloco 2 está concluído.
+
 ### Bloco 3 — Persistência completa das alternativas e publicação
 
 As tabelas V1 a V5 existem. O fonte mostrou uma lacuna: a publicação atual altera o status e registra evento, mas não mantém uma entidade própria apontando claramente qual versão está vigente. As três alternativas também precisam existir no banco antes da escolha.
@@ -525,7 +527,7 @@ Não iniciaremos novas regras diretamente nos arquivos grandes. A ordem é:
 
 ## 8. Próximo passo exato
 
-**Próxima tarefa:** continuar o Bloco 2 criando `GradeCanonicalMapper` e `FechamentoInteligenteFacade` para coordenar adapter legado, validador e solver por interfaces, mantendo controllers leves e sem duplicar regras.
+**Próxima tarefa:** iniciar o Bloco 3 criando as migrações Flyway V6/V7 para publicação e alternativas de simulação, sem alterar V1-V5. Depois implementar os repositórios Dapper pequenos e parametrizados correspondentes.
 
 Não devemos iniciar V6/V7 ou ampliar o solver antes de concluir essa cobertura, pois o motor atual já compila e já valida uma grade real; precisamos preservar esse comportamento durante a extensão.
 
@@ -543,6 +545,7 @@ Não devemos iniciar V6/V7 ou ampliar o solver antes de concluir essa cobertura,
 | 01/10/2026 | Primeiro adapter do Bloco 2 | Commit local `e061f32`; snapshot legado convertido para contrato `SolverInput`; 25/25 testes aprovados | Criar adapters estáveis do solver e do validador existentes |
 | 01/10/2026 | Adapters do solver/validador e decisão de persistência leve | Commit local `4a1c829`; 29/29 testes aprovados; definido Dapper + MySqlConnector e Flyway, sem novos DbContexts | Migrar o repositório de cenários/versões para Dapper |
 | 01/10/2026 | Migração completa do microsserviço para Dapper | Commit local `ac8f41e`; EF, Pomelo e DbContext removidos; Dapper + MySqlConnector; 31/31 testes; build sem avisos | Criar mapper canônico e fachada do fechamento inteligente |
+| 01/10/2026 | Conclusão do encapsulamento seguro | Commits locais `9171de9` e `83b7d2b`; mapper, fachada e endpoint leve concluídos; 36/36 testes; build sem avisos | Iniciar Flyway V6/V7 e persistência Dapper do Bloco 3 |
 
 ## 10. Como atualizar este documento
 

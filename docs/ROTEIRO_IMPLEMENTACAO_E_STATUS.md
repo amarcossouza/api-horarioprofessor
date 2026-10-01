@@ -79,7 +79,7 @@ O roteiro completo possui **11 blocos, numerados de 0 a 10**. O **Bloco 0 foi co
 | Bloco | Fase | Situação em 01/10/2026 | Entrega que encerra a fase |
 |---:|---|---|---|
 | 0 | Proteção e linha de base | **Concluído localmente** | Três fontes em Git, novos arquivos sem segredos e três builds reproduzíveis; remoto do `api-cenarios` ainda deve ser cadastrado |
-| 1 | Testes de caracterização | **Em andamento — 7 testes aprovados** | Testes preservam validador, solver, versões e restauração atuais |
+| 1 | Testes de caracterização | **Em andamento — 13 testes aprovados** | Testes preservam validador, solver, comparação, versões e restauração atuais |
 | 2 | Encapsulamento seguro | Pendente | Código existente preservado e acessado por adapters/fachadas |
 | 3 | Persistência completa | Pendente | V6/V7 aplicadas; três alternativas e publicação persistidas |
 | 4 | Snapshot completo das regras | Pendente | Motor recebe matriz, IDs, bloqueios, preferências, travas e origem |
@@ -331,7 +331,7 @@ Esses arquivos serão cobertos por testes de caracterização e não serão ampl
 
 **Critério de saída:** comportamento atual protegido antes da divisão das classes.
 
-**Progresso em 01/10/2026:** o projeto `tests/ApiCenarios.Tests` foi criado e possui 7 testes aprovados. Já estão cobertos grade simples viável, cenário inviável por bloqueio total, geração de três alternativas distintas, snapshot vazio, conflito simultâneo de professor, atribuição em horário bloqueado e carga completa. Permanecem pendentes os testes do comparador, persistência/restauração, API integrada, preferências negociáveis, posições travadas e ajuste localizado.
+**Progresso em 01/10/2026:** o projeto `tests/ApiCenarios.Tests` foi criado e possui 13 testes aprovados. Já estão cobertos grade simples viável, cenário inviável por bloqueio total, geração de três alternativas distintas, snapshot vazio, conflito simultâneo de professor, atribuição em horário bloqueado, carga completa, comparação com inserção/remoção/troca de professor, persistência após reabertura e histórico com parentesco entre versões. Permanecem pendentes os testes da API integrada, preferências negociáveis, posições travadas e ajuste localizado.
 
 ### Bloco 2 — Encapsulamento seguro sem reescrever o motor
 
@@ -519,7 +519,7 @@ Não iniciaremos novas regras diretamente nos arquivos grandes. A ordem é:
 
 ## 8. Próximo passo exato
 
-**Próxima tarefa:** concluir o Bloco 1 adicionando testes de caracterização para `ComparadorVersoesService`, `CenarioService` e os endpoints integrados, incluindo salvar, encerrar, reabrir e restaurar um cenário. Depois serão criados os adapters do Bloco 2, sem dividir nem reescrever as classes existentes.
+**Próxima tarefa:** concluir o Bloco 1 adicionando testes integrados dos endpoints de cenário, versão, validação e comparação; em seguida cobrir preferências negociáveis, posições travadas e ajuste localizado. Depois serão criados os adapters do Bloco 2, sem dividir nem reescrever as classes existentes.
 
 Não devemos iniciar V6/V7 ou ampliar o solver antes de concluir essa cobertura, pois o motor atual já compila e já valida uma grade real; precisamos preservar esse comportamento durante a extensão.
 
@@ -531,6 +531,7 @@ Não devemos iniciar V6/V7 ou ampliar o solver antes de concluir essa cobertura,
 | 01/10/2026 | Flyway, build e verificação das três aplicações | V1-V5 `Success`; 3 builds sem erros; APIs e frontend ativos | Proteger fonte e criar testes |
 | 01/10/2026 | Consulta de cenário e validação de versão existente | Banco acessível; 280/280 aulas; 0 violações; 18 avisos | Testar três alternativas em caso real |
 | 01/10/2026 | Proteção dos três projetos e testes iniciais de caracterização | API e frontend enviados à nuvem; motor protegido em commit local `6357fc1`, aguardando criação do remoto; 7/7 testes aprovados; três builds sem erros; 290/452 avisos legados registrados; motor sem avisos | Completar testes de comparação, persistência, restauração e API integrada |
+| 01/10/2026 | Comparação, persistência e restauração do motor de cenários | Commits locais `3a3f07a` e `6a45a38`; 13/13 testes aprovados; cenário e versões restaurados após reabertura | Testar os endpoints integrados e regras de preservação localizada |
 
 ## 10. Como atualizar este documento
 

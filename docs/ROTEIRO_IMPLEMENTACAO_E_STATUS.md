@@ -80,7 +80,7 @@ O roteiro completo possui **11 blocos, numerados de 0 a 10**. Os **Blocos 0 e 1 
 |---:|---|---|---|
 | 0 | Proteção e linha de base | **Concluído localmente** | Três fontes em Git, novos arquivos sem segredos e três builds reproduzíveis; remoto do `api-cenarios` ainda deve ser cadastrado |
 | 1 | Testes de caracterização | **Concluído — 22 testes aprovados** | Testes preservam validador, solver, comparação, versões, restauração, endpoints, concessões e ajustes localizados |
-| 2 | Encapsulamento seguro | **Próximo** | Código existente preservado e acessado por adapters/fachadas |
+| 2 | Encapsulamento seguro | **Em andamento — adapter legado concluído** | Código existente preservado e acessado por adapters/fachadas |
 | 3 | Persistência completa | Pendente | V6/V7 aplicadas; três alternativas e publicação persistidas |
 | 4 | Snapshot completo das regras | Pendente | Motor recebe matriz, IDs, bloqueios, preferências, travas e origem |
 | 5 | Três caminhos de fechamento | Protótipo parcial | Três soluções distintas, válidas, persistidas e explicadas |
@@ -360,6 +360,8 @@ Esses arquivos serão cobertos por testes de caracterização e não serão ampl
 
 **Critério de saída:** o novo processo consegue chamar grade, validador e solver existentes por contratos estáveis, sem mudança de comportamento no fluxo atual.
 
+**Progresso em 01/10/2026:** criados `GradeSnapshotV1`, `IProcessamentoLegadoAdapter` e `ProcessamentoLegadoAdapter`. O adapter converte matrizes legadas em `SolverInput`, calcula a carga já distribuída, copia bloqueios, protege posições existentes e não modifica os objetos de entrada. Commit local `e061f32`; suíte completa com 25/25 testes aprovados.
+
 ### Bloco 3 — Persistência completa das alternativas e publicação
 
 As tabelas V1 a V5 existem. O fonte mostrou uma lacuna: a publicação atual altera o status e registra evento, mas não mantém uma entidade própria apontando claramente qual versão está vigente. As três alternativas também precisam existir no banco antes da escolha.
@@ -519,7 +521,7 @@ Não iniciaremos novas regras diretamente nos arquivos grandes. A ordem é:
 
 ## 8. Próximo passo exato
 
-**Próxima tarefa:** iniciar o Bloco 2 definindo contratos e adapters leves ao redor do solver, validador e cenário existentes, sem dividir nem reescrever essas classes. O primeiro adapter deverá receber um snapshot do processamento legado e convertê-lo em `SolverInput` versionado.
+**Próxima tarefa:** continuar o Bloco 2 criando `ISolverExistenteAdapter`/`SolverExistenteAdapter` e `IValidadorExistenteAdapter`/`ValidadorExistenteAdapter`, com testes que comprovem a delegação para as classes atuais sem duplicar suas regras.
 
 Não devemos iniciar V6/V7 ou ampliar o solver antes de concluir essa cobertura, pois o motor atual já compila e já valida uma grade real; precisamos preservar esse comportamento durante a extensão.
 
@@ -534,6 +536,7 @@ Não devemos iniciar V6/V7 ou ampliar o solver antes de concluir essa cobertura,
 | 01/10/2026 | Comparação, persistência e restauração do motor de cenários | Commits locais `3a3f07a` e `6a45a38`; 13/13 testes aprovados; cenário e versões restaurados após reabertura | Testar os endpoints integrados e regras de preservação localizada |
 | 01/10/2026 | Fluxo HTTP integrado do motor de cenários | Commit local `3d7d911`; 14/14 testes aprovados; criação, versões, restauração, validação e comparação comprovadas por API; zero avisos no novo motor | Cobrir preferências negociáveis, posições travadas e ajuste localizado |
 | 01/10/2026 | Conclusão dos testes de caracterização | Commit local `3d2b706`; 22/22 testes aprovados; preferências flexíveis, concessões, travas, ajuste localizado, sai-e-volta e estados do solver cobertos | Iniciar adapter de entrada legado → `SolverInput` no Bloco 2 |
+| 01/10/2026 | Primeiro adapter do Bloco 2 | Commit local `e061f32`; snapshot legado convertido para contrato `SolverInput`; 25/25 testes aprovados | Criar adapters estáveis do solver e do validador existentes |
 
 ## 10. Como atualizar este documento
 

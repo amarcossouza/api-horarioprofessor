@@ -74,13 +74,13 @@ Isso representa um **protótipo funcional adiantado**, não a conclusão formal 
 
 ### Painel mestre — 11 blocos até a conclusão
 
-O roteiro completo possui **11 blocos, numerados de 0 a 10**. O **Bloco 0 foi concluído localmente** e o **Bloco 1 está em andamento**, com protótipos parciais já existentes para os blocos 5, 6 e 9. O envio do novo repositório `api-cenarios` à nuvem depende apenas da definição de seu endereço remoto.
+O roteiro completo possui **11 blocos, numerados de 0 a 10**. Os **Blocos 0 e 1 foram concluídos** e o próximo trabalho é o **Bloco 2**, com protótipos parciais já existentes para os blocos 5, 6 e 9. O envio do novo repositório `api-cenarios` à nuvem depende apenas da definição de seu endereço remoto.
 
 | Bloco | Fase | Situação em 01/10/2026 | Entrega que encerra a fase |
 |---:|---|---|---|
 | 0 | Proteção e linha de base | **Concluído localmente** | Três fontes em Git, novos arquivos sem segredos e três builds reproduzíveis; remoto do `api-cenarios` ainda deve ser cadastrado |
-| 1 | Testes de caracterização | **Em andamento — 14 testes aprovados** | Testes preservam validador, solver, comparação, versões, restauração e endpoints atuais |
-| 2 | Encapsulamento seguro | Pendente | Código existente preservado e acessado por adapters/fachadas |
+| 1 | Testes de caracterização | **Concluído — 22 testes aprovados** | Testes preservam validador, solver, comparação, versões, restauração, endpoints, concessões e ajustes localizados |
+| 2 | Encapsulamento seguro | **Próximo** | Código existente preservado e acessado por adapters/fachadas |
 | 3 | Persistência completa | Pendente | V6/V7 aplicadas; três alternativas e publicação persistidas |
 | 4 | Snapshot completo das regras | Pendente | Motor recebe matriz, IDs, bloqueios, preferências, travas e origem |
 | 5 | Três caminhos de fechamento | Protótipo parcial | Três soluções distintas, válidas, persistidas e explicadas |
@@ -90,7 +90,7 @@ O roteiro completo possui **11 blocos, numerados de 0 a 10**. O **Bloco 0 foi co
 | 9 | Frontend final | Protótipo parcial | Tela modular para comparar, decidir, publicar, restaurar e desfazer |
 | 10 | Piloto e aceite | Pendente | Caso real aprovado, reinício/restauração testados e aceite do gestor |
 
-**Contagem objetiva:** são 11 blocos no total. O Bloco 0 está concluído localmente e o Bloco 1 está em andamento; restam 10 blocos formais até o aceite final. Como parte do código futuro já existe, alguns blocos serão trabalho de teste, correção e organização, não implementação do zero.
+**Contagem objetiva:** são 11 blocos no total. Os Blocos 0 e 1 estão concluídos; restam 9 blocos formais, do Bloco 2 ao aceite final. Como parte do código futuro já existe, alguns blocos serão trabalho de teste, correção e organização, não implementação do zero.
 
 ### Marcos de controle
 
@@ -329,9 +329,9 @@ Esses arquivos serão cobertos por testes de caracterização e não serão ampl
 - resultado `OPTIMAL`, `FEASIBLE`, `INFEASIBLE` e `UNKNOWN`;
 - salvar, fechar processo, reabrir e restaurar.
 
-**Critério de saída:** comportamento atual protegido antes da divisão das classes.
+**Critério de saída:** comportamento atual protegido antes da extensão por adapters e fachadas.
 
-**Progresso em 01/10/2026:** o projeto `tests/ApiCenarios.Tests` foi criado e possui 14 testes aprovados. Já estão cobertos grade simples viável, cenário inviável por bloqueio total, geração de três alternativas distintas, snapshot vazio, conflito simultâneo de professor, atribuição em horário bloqueado, carga completa, comparação com inserção/remoção/troca de professor, persistência após reabertura, histórico com parentesco entre versões e fluxo HTTP integrado de criar cenário, salvar duas versões, restaurar, validar e comparar. Permanecem pendentes os testes de preferências negociáveis, posições travadas e ajuste localizado.
+**Conclusão em 01/10/2026:** o projeto `tests/ApiCenarios.Tests` possui 22 testes aprovados. Estão cobertos grade viável e inviável, bloqueios, carga, conflito simultâneo, sai-e-volta, estados `OPTIMAL`, `FEASIBLE`, `INFEASIBLE` e `UNKNOWN`, geração de três alternativas, concessão autorizada, preferência negociável, posição travada, ajuste localizado, comparação, persistência, reabertura, histórico e fluxo HTTP integrado. O Bloco 1 está concluído.
 
 ### Bloco 2 — Encapsulamento seguro sem reescrever o motor
 
@@ -519,7 +519,7 @@ Não iniciaremos novas regras diretamente nos arquivos grandes. A ordem é:
 
 ## 8. Próximo passo exato
 
-**Próxima tarefa:** concluir o Bloco 1 cobrindo preferências negociáveis, preservação de posições travadas e ajuste localizado. Depois serão criados os adapters do Bloco 2, sem dividir nem reescrever as classes existentes.
+**Próxima tarefa:** iniciar o Bloco 2 definindo contratos e adapters leves ao redor do solver, validador e cenário existentes, sem dividir nem reescrever essas classes. O primeiro adapter deverá receber um snapshot do processamento legado e convertê-lo em `SolverInput` versionado.
 
 Não devemos iniciar V6/V7 ou ampliar o solver antes de concluir essa cobertura, pois o motor atual já compila e já valida uma grade real; precisamos preservar esse comportamento durante a extensão.
 
@@ -533,6 +533,7 @@ Não devemos iniciar V6/V7 ou ampliar o solver antes de concluir essa cobertura,
 | 01/10/2026 | Proteção dos três projetos e testes iniciais de caracterização | API e frontend enviados à nuvem; motor protegido em commit local `6357fc1`, aguardando criação do remoto; 7/7 testes aprovados; três builds sem erros; 290/452 avisos legados registrados; motor sem avisos | Completar testes de comparação, persistência, restauração e API integrada |
 | 01/10/2026 | Comparação, persistência e restauração do motor de cenários | Commits locais `3a3f07a` e `6a45a38`; 13/13 testes aprovados; cenário e versões restaurados após reabertura | Testar os endpoints integrados e regras de preservação localizada |
 | 01/10/2026 | Fluxo HTTP integrado do motor de cenários | Commit local `3d7d911`; 14/14 testes aprovados; criação, versões, restauração, validação e comparação comprovadas por API; zero avisos no novo motor | Cobrir preferências negociáveis, posições travadas e ajuste localizado |
+| 01/10/2026 | Conclusão dos testes de caracterização | Commit local `3d2b706`; 22/22 testes aprovados; preferências flexíveis, concessões, travas, ajuste localizado, sai-e-volta e estados do solver cobertos | Iniciar adapter de entrada legado → `SolverInput` no Bloco 2 |
 
 ## 10. Como atualizar este documento
 

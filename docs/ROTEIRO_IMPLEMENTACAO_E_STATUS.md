@@ -38,7 +38,7 @@ As estruturas principais já possuem código, mas ainda não devem ser considera
 | Motor de cenários | Swagger respondeu na porta 5010 |
 | Frontend | Respondeu na porta 5051 |
 | CP-SAT | Endpoint de status respondeu `operacional`, OR-Tools 9.10 |
-| Flyway | V1 a V5 validadas com sucesso; schema `droplexdb` na versão 5 |
+| Flyway | V1 a V7 validadas e aplicadas com sucesso; schema `droplexdb` na versão 7 |
 | Persistência | `GET /api/Cenarios` acessou o banco e retornou cenários existentes |
 | Restauração/leitura | Cenário 2 retornou duas versões salvas |
 | Validador | Versão 2: 280/280 aulas, 0 violações e 18 avisos R6 |
@@ -81,7 +81,7 @@ O roteiro completo possui **11 blocos, numerados de 0 a 10**. Os **Blocos 0, 1 e
 | 0 | Proteção e linha de base | **Concluído localmente** | Três fontes em Git, novos arquivos sem segredos e três builds reproduzíveis; remoto do `api-cenarios` ainda deve ser cadastrado |
 | 1 | Testes de caracterização | **Concluído — 22 testes aprovados** | Testes preservam validador, solver, comparação, versões, restauração, endpoints, concessões e ajustes localizados |
 | 2 | Encapsulamento seguro | **Concluído — 36 testes aprovados** | Código existente preservado e acessado por adapters/fachadas e endpoint leve |
-| 3 | Persistência completa | **Próximo** | V6/V7 aplicadas; três alternativas e publicação persistidas |
+| 3 | Persistência completa | **Em andamento — 41 testes aprovados** | V6/V7 aplicadas; três alternativas e publicação persistidas |
 | 4 | Snapshot completo das regras | Pendente | Motor recebe matriz, IDs, bloqueios, preferências, travas e origem |
 | 5 | Três caminhos de fechamento | Protótipo parcial | Três soluções distintas, válidas, persistidas e explicadas |
 | 6 | Viabilidade e concessões | Protótipo parcial | Sistema informa exatamente quais restrições liberar para fechar 100% |
@@ -392,6 +392,10 @@ As tabelas V1 a V5 existem. O fonte mostrou uma lacuna: a publicação atual alt
 - publicar encerra a vigência anterior e abre uma nova vigência;
 - desfazer publicação cria novo evento e restaura uma referência anterior, sem apagar histórico.
 
+**Progresso em 01/10/2026:** V6 e V7 foram executadas pelo gestor no banco de desenvolvimento; Flyway confirmou o schema `droplexdb` na versão 7. No `api-cenarios`, foram implementados repositórios Dapper parametrizados para alternativas e publicações, sem Entity Framework. As três alternativas são gravadas na mesma transação. A adoção bloqueia a candidata, cria uma nova `hprof_cenarioversao` imutável, marca a escolhida como `ADOTADA` e as demais como `DESCARTADA`, tudo atomicamente e sem exclusão. A publicação encerra a vigente como `SUBSTITUIDA`; revogação e restauração preservam o histórico, e restaurar cria uma nova publicação apontando para a versão histórica. Foram adicionados controllers leves para listar/adotar alternativas e publicar/restaurar/revogar. Suíte completa: 41/41 testes aprovados, build sem erros e sem avisos.
+
+**Para concluir formalmente o Bloco 3:** executar um teste integrado contra o MySQL de desenvolvimento pelos endpoints, comprovando criação das três alternativas, adoção, publicação, restauração e leitura após reinício do serviço. Nenhuma nova migração é necessária para esse teste.
+
 ### Bloco 4 — Carregamento completo das regras reais
 
 **Criar:**
@@ -527,9 +531,9 @@ Não iniciaremos novas regras diretamente nos arquivos grandes. A ordem é:
 
 ## 8. Próximo passo exato
 
-**Próxima tarefa:** iniciar o Bloco 3 criando as migrações Flyway V6/V7 para publicação e alternativas de simulação, sem alterar V1-V5. Depois implementar os repositórios Dapper pequenos e parametrizados correspondentes.
+**Próxima tarefa:** concluir o Bloco 3 com um teste integrado no MySQL de desenvolvimento: iniciar o `api-cenarios`, persistir três alternativas vinculadas a uma simulação real, adotar uma, publicar a versão, restaurar uma publicação histórica e reiniciar o serviço para confirmar a leitura. Se esse teste passar, registrar as evidências e avançar para o Bloco 4 — snapshot completo das regras reais.
 
-Não devemos iniciar V6/V7 ou ampliar o solver antes de concluir essa cobertura, pois o motor atual já compila e já valida uma grade real; precisamos preservar esse comportamento durante a extensão.
+Não ampliar o solver antes dessa comprovação. O código e o schema já estão prontos; falta provar o ciclo persistido ponta a ponta no banco real.
 
 ## 9. Diário resumido
 
@@ -546,6 +550,7 @@ Não devemos iniciar V6/V7 ou ampliar o solver antes de concluir essa cobertura,
 | 01/10/2026 | Adapters do solver/validador e decisão de persistência leve | Commit local `4a1c829`; 29/29 testes aprovados; definido Dapper + MySqlConnector e Flyway, sem novos DbContexts | Migrar o repositório de cenários/versões para Dapper |
 | 01/10/2026 | Migração completa do microsserviço para Dapper | Commit local `ac8f41e`; EF, Pomelo e DbContext removidos; Dapper + MySqlConnector; 31/31 testes; build sem avisos | Criar mapper canônico e fachada do fechamento inteligente |
 | 01/10/2026 | Conclusão do encapsulamento seguro | Commits locais `9171de9` e `83b7d2b`; mapper, fachada e endpoint leve concluídos; 36/36 testes; build sem avisos | Iniciar Flyway V6/V7 e persistência Dapper do Bloco 3 |
+| 01/10/2026 | Persistência Dapper do Bloco 3 | Flyway V6/V7 aplicado pelo gestor; alternativas, adoção transacional, publicação, revogação e restauração implementadas; 41/41 testes; sem EF e sem exclusão de histórico | Executar ciclo integrado no MySQL e comprovar restauração após reinício |
 
 ## 10. Como atualizar este documento
 

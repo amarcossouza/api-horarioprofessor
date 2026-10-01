@@ -70,16 +70,16 @@ O fluxo abaixo já possui implementação, embora parte ainda precise de testes 
 9. o sistema possui código para regras/exceções e publicação;
 10. eventos registram parte da auditoria do cenário.
 
-Isso representa um **protótipo funcional adiantado**, não a conclusão formal das fases. O código precisa ser protegido, testado, dividido e validado com o caso real.
+Isso representa um **protótipo funcional adiantado**, não a conclusão formal das fases. O código precisa ser protegido, testado, encapsulado e validado com o caso real, preservando as classes existentes que já funcionam.
 
 ### Painel mestre — 11 blocos até a conclusão
 
-O roteiro completo possui **11 blocos, numerados de 0 a 10**. Estamos formalmente no **Bloco 0**, com protótipos parciais já existentes para os blocos 5, 6 e 9.
+O roteiro completo possui **11 blocos, numerados de 0 a 10**. O **Bloco 0 foi concluído localmente** e o **Bloco 1 está em andamento**, com protótipos parciais já existentes para os blocos 5, 6 e 9. O envio do novo repositório `api-cenarios` à nuvem depende apenas da definição de seu endereço remoto.
 
 | Bloco | Fase | Situação em 01/10/2026 | Entrega que encerra a fase |
 |---:|---|---|---|
-| 0 | Proteção e linha de base | **Em andamento** | Todo fonte no Git, sem segredos, e três builds reproduzíveis |
-| 1 | Testes de caracterização | Pendente | Testes preservam validador, solver, versões e restauração atuais |
+| 0 | Proteção e linha de base | **Concluído localmente** | Três fontes em Git, novos arquivos sem segredos e três builds reproduzíveis; remoto do `api-cenarios` ainda deve ser cadastrado |
+| 1 | Testes de caracterização | **Em andamento — 7 testes aprovados** | Testes preservam validador, solver, versões e restauração atuais |
 | 2 | Encapsulamento seguro | Pendente | Código existente preservado e acessado por adapters/fachadas |
 | 3 | Persistência completa | Pendente | V6/V7 aplicadas; três alternativas e publicação persistidas |
 | 4 | Snapshot completo das regras | Pendente | Motor recebe matriz, IDs, bloqueios, preferências, travas e origem |
@@ -90,7 +90,7 @@ O roteiro completo possui **11 blocos, numerados de 0 a 10**. Estamos formalment
 | 9 | Frontend final | Protótipo parcial | Tela modular para comparar, decidir, publicar, restaurar e desfazer |
 | 10 | Piloto e aceite | Pendente | Caso real aprovado, reinício/restauração testados e aceite do gestor |
 
-**Contagem objetiva:** são 11 blocos no total. O Bloco 0 está em andamento e existem 10 blocos formais até o aceite final. Como parte do código futuro já existe, alguns blocos serão trabalho de teste, correção e organização, não implementação do zero.
+**Contagem objetiva:** são 11 blocos no total. O Bloco 0 está concluído localmente e o Bloco 1 está em andamento; restam 10 blocos formais até o aceite final. Como parte do código futuro já existe, alguns blocos serão trabalho de teste, correção e organização, não implementação do zero.
 
 ### Marcos de controle
 
@@ -294,6 +294,18 @@ Esses arquivos serão cobertos por testes de caracterização e não serão ampl
 
 **Critério de saída:** todo fonte recuperável pelo Git e os três projetos compilando.
 
+**Evidências de conclusão local em 01/10/2026:**
+
+- API principal: commit `38fbc9c` — documentação e migrações Flyway V1-V5;
+- frontend MVC: commit `959c33e` — integração da tela e do cliente de cenários;
+- motor de cenários: commit `6357fc1` — fonte do motor e testes iniciais;
+- recompilação completa concluída com zero erros nos três projetos; o novo motor ficou com zero avisos, enquanto a API principal apresentou 290 avisos legados e o frontend 452 avisos legados;
+- `appsettings.Development.json`, `flyway.conf`, `bin/` e `obj/` não foram incluídos nos novos commits;
+- nenhuma credencial foi adicionada pelas alterações desta entrega;
+- pendência operacional: cadastrar o remoto do repositório `api-cenarios` e enviá-lo à nuvem.
+
+**Risco identificado:** a API principal e o frontend já possuíam credenciais antigas versionadas antes desta entrega. A remoção do código atual e a rotação dessas credenciais serão tratadas em uma tarefa própria, usando configuração segura, sem interromper a conexão utilizada pelo desenvolvimento.
+
 ### Bloco 1 — Testes de caracterização
 
 **Criar:**
@@ -318,6 +330,8 @@ Esses arquivos serão cobertos por testes de caracterização e não serão ampl
 - salvar, fechar processo, reabrir e restaurar.
 
 **Critério de saída:** comportamento atual protegido antes da divisão das classes.
+
+**Progresso em 01/10/2026:** o projeto `tests/ApiCenarios.Tests` foi criado e possui 7 testes aprovados. Já estão cobertos grade simples viável, cenário inviável por bloqueio total, geração de três alternativas distintas, snapshot vazio, conflito simultâneo de professor, atribuição em horário bloqueado e carga completa. Permanecem pendentes os testes do comparador, persistência/restauração, API integrada, preferências negociáveis, posições travadas e ajuste localizado.
 
 ### Bloco 2 — Encapsulamento seguro sem reescrever o motor
 
@@ -505,17 +519,18 @@ Não iniciaremos novas regras diretamente nos arquivos grandes. A ordem é:
 
 ## 8. Próximo passo exato
 
-**Próxima tarefa:** proteger o protótipo atual e criar o projeto de testes `api-cenarios.Tests` com os primeiros testes do validador e do solver. Em seguida serão criados os adapters, sem dividir nem reescrever as classes existentes.
+**Próxima tarefa:** concluir o Bloco 1 adicionando testes de caracterização para `ComparadorVersoesService`, `CenarioService` e os endpoints integrados, incluindo salvar, encerrar, reabrir e restaurar um cenário. Depois serão criados os adapters do Bloco 2, sem dividir nem reescrever as classes existentes.
 
-Não devemos iniciar V6/V7 ou ampliar o solver antes dessa proteção, pois o motor atual já compila e já valida uma grade real; precisamos preservar esse comportamento durante a extensão.
+Não devemos iniciar V6/V7 ou ampliar o solver antes de concluir essa cobertura, pois o motor atual já compila e já valida uma grade real; precisamos preservar esse comportamento durante a extensão.
 
 ## 9. Diário resumido
 
 | Data | Trabalho | Resultado | Próximo passo |
 |---|---|---|---|
 | 31/08/2026 | Planejamento, Flyway V1-V5 e protótipo dos blocos 1-9 | Código inicial criado | Consolidar e provar integração |
-| 01/10/2026 | Flyway, build e verificação das três aplicações | V1-V5 `Success`; 3 builds limpos; APIs e frontend ativos | Proteger fonte e criar testes |
+| 01/10/2026 | Flyway, build e verificação das três aplicações | V1-V5 `Success`; 3 builds sem erros; APIs e frontend ativos | Proteger fonte e criar testes |
 | 01/10/2026 | Consulta de cenário e validação de versão existente | Banco acessível; 280/280 aulas; 0 violações; 18 avisos | Testar três alternativas em caso real |
+| 01/10/2026 | Proteção local dos três projetos e testes iniciais de caracterização | Commits `38fbc9c`, `959c33e` e `6357fc1`; 7/7 testes aprovados; três builds sem erros; 290/452 avisos legados registrados; motor sem avisos | Completar testes de comparação, persistência, restauração e API integrada |
 
 ## 10. Como atualizar este documento
 

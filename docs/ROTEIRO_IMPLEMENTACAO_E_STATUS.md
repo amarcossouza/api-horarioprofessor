@@ -83,7 +83,7 @@ Isso representa um **protótipo funcional adiantado**, não a conclusão formal 
 
 ### Painel mestre — 11 blocos até a conclusão
 
-O roteiro completo possui **11 blocos, numerados de 0 a 10**. Os **Blocos 0 a 8 foram concluídos** e o **Bloco 9 está em andamento**. A primeira entrega funcional do novo frontend já solicita o processamento em segundo plano, retoma uma simulação salva, mostra as três alternativas em cinco grades diárias, destaca um professor, lista as concessões e adota a solução escolhida sem quebrar o fluxo legado. Falta integrar no frontend a seleção explícita do ajuste cirúrgico e concluir a comparação operacional. O envio do novo repositório `api-cenarios` à nuvem depende apenas da definição de seu endereço remoto.
+O roteiro completo possui **11 blocos, numerados de 0 a 10**. Os **Blocos 0 a 8 foram concluídos** e o **Bloco 9 está funcionalmente implementado, aguardando apenas o aceite visual autenticado**. O frontend solicita o processamento em segundo plano, retoma uma simulação salva, mostra e compara três alternativas em cinco grades diárias, destaca um professor, lista concessões, permite delimitar professores e turmas de um ajuste cirúrgico e adota a solução escolhida sem quebrar o fluxo legado. O envio do novo repositório `api-cenarios` à nuvem depende apenas da definição de seu endereço remoto.
 
 | Bloco | Fase | Situação em 01/10/2026 | Entrega que encerra a fase |
 |---:|---|---|---|
@@ -96,7 +96,7 @@ O roteiro completo possui **11 blocos, numerados de 0 a 10**. Os **Blocos 0 a 8 
 | 6 | Viabilidade e concessões | **Concluído — 48 testes e simulação real** | Sistema informa exatamente quais restrições liberar para fechar 100% |
 | 7 | Ajuste cirúrgico | **Concluído — 49 testes e simulação real** | Mudança localizada sem alterar o restante da grade |
 | 8 | Execução longa | **Concluído — 51 testes e ciclo real** | Simulações em segundo plano, retomáveis e acompanháveis |
-| 9 | Extensão segura do frontend | **Em andamento — fechamento principal integrado** | Três grades, cinco dias, busca de professor, concessões, retomada e adoção testadas; falta ajuste cirúrgico e comparação operacional |
+| 9 | Extensão segura do frontend | **Implementado — aguardando aceite visual autenticado** | Fechamento, comparação, ajuste cirúrgico delimitado, cinco grades, busca, concessões, retomada e adoção testados |
 | 9 | Frontend final | Protótipo parcial | Tela modular para comparar, decidir, publicar, restaurar e desfazer |
 | 10 | Piloto e aceite | Pendente | Caso real aprovado, reinício/restauração testados e aceite do gestor |
 
@@ -524,12 +524,15 @@ O frontend exibirá os dados, coletará decisões do gestor e chamará APIs. Ele
 - relação exata das concessões sugeridas por professor, dia, aula e turma;
 - adoção confirmada primeiro no microsserviço e somente depois aplicada à sessão do frontend;
 - teste integrado real: simulação 9 concluída com `ALT_A`, `ALT_B` e `ALT_C`, todas com 360/360 aulas; alternativa 22 adotada como versão 6 do cenário 4, preservando a versão 5.
+- comparação objetiva das alternativas por aulas, pendências, movimentações e diferenças em relação à opção A;
+- ação “Ajustar pontualmente” sobre qualquer alternativa, com seleção explícita dos professores e turmas autorizados;
+- montagem da entrada extraída para serviço próprio, mantendo o controller MVC leve;
+- teste cirúrgico real: simulação 10 com IVONETE e MARCO, 45 posições liberadas, 315 protegidas, três resultados distintos de 360/360 aulas e zero alterações fora do escopo.
 
 **Pendente dentro do Bloco 9:**
 
-- seleção explícita de professores, turmas e limite de movimentos para chamar o ajuste cirúrgico do Bloco 7;
-- comparação operacional entre as três sugestões antes da escolha;
-- teste visual autenticado no fluxo normal do gestor. Melhorias apenas estéticas permanecem adiadas.
+- aceite visual autenticado no fluxo normal do gestor. A automação visual local não conseguiu conectar-se ao navegador desta sessão, mas compilação, JavaScript e rotas integradas foram validados;
+- melhorias apenas estéticas permanecem adiadas e não bloqueiam o piloto.
 
 ### Bloco 10 — Piloto e aceite
 
@@ -562,7 +565,7 @@ Não iniciaremos novas regras diretamente nos arquivos grandes. A ordem é:
 
 ## 8. Próximo passo exato
 
-**Próxima tarefa:** continuar o Bloco 9 no `HorarioProfessor2025_v2` adicionando ao painel funcional a seleção explícita de professores, turmas e limite de movimentos para consumir o ajuste cirúrgico já existente no `api-cenarios`; depois comparar as três sugestões e executar o teste visual autenticado. Não investir em acabamento visual antes de concluir essas funções.
+**Próxima tarefa:** executar o aceite visual autenticado do Bloco 9 no fluxo normal do gestor: abrir “Fechamento inteligente”, recuperar a simulação 10, visualizar e comparar as três grades, pesquisar IVONETE/MARCO e confirmar os controles do ajuste pontual. Em seguida iniciar o Bloco 10 com o piloto completo, sem investir em acabamento visual.
 
 ## 9. Diário resumido
 
@@ -587,6 +590,7 @@ Não iniciaremos novas regras diretamente nos arquivos grandes. A ordem é:
 | 02/10/2026 | Conclusão do Bloco 7 | Endpoint e serviço leve de ajuste cirúrgico; escopo explícito; validação que rejeita mudança externa; persistência recuperável; 49/49 testes; simulação 6 com IVONETE/MARCO, 45 posições liberadas, 315 protegidas e três grades distintas de 360/360 | Iniciar Bloco 8 com execução em segundo plano |
 | 02/10/2026 | Conclusão do Bloco 8 | Fila `Channel`, worker único, estado persistido, recuperação de pendentes após reinício, consulta e cancelamento; 51/51 testes; trabalho 7 concluído com três alternativas recuperadas e trabalho 8 cancelado sem resultados | Iniciar Bloco 9 com integração modular do frontend |
 | 02/10/2026 | Primeira entrega funcional do Bloco 9 | Frontend modular integrado à fila; três alternativas recuperáveis; cinco grades por sugestão; busca e destaque de professor; concessões exibidas; adoção transacional; build Release sem erros; simulação 9 com três resultados 360/360 e alternativa 22 adotada como versão 6 | Integrar seleção do ajuste cirúrgico, comparação e teste visual autenticado |
+| 02/10/2026 | Ajuste cirúrgico e comparação no frontend | Seleção explícita de professores/turmas; três novos ajustes recuperáveis; comparação entre opções; controller aliviado por serviço de montagem; build sem erros; simulação 10 com 45 posições liberadas, 315 protegidas, três grades 360/360 e zero mudança fora do escopo | Fazer aceite visual autenticado e iniciar o Bloco 10 |
 
 ## 10. Como atualizar este documento
 

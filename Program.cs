@@ -67,6 +67,9 @@ builder.Services.AddScoped<GetMaterialAulasPorAno>();
 // No arquivo Program.cs ou Startup.cs
 builder.Services.AddScoped<HorarioService>();
 builder.Services.AddScoped<HorarioDistribuicaoService>();
+builder.Services.AddScoped<IGradeOrigemSnapshotService>(_ =>
+    new GradeOrigemSnapshotService(connectionString
+        ?? throw new InvalidOperationException("String de conexão não configurada.")));
 
 
 

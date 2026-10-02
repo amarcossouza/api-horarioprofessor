@@ -74,7 +74,7 @@ Isso representa um **protótipo funcional adiantado**, não a conclusão formal 
 
 ### Painel mestre — 11 blocos até a conclusão
 
-O roteiro completo possui **11 blocos, numerados de 0 a 10**. Os **Blocos 0, 1, 2 e 3 foram concluídos** e o próximo trabalho é o **Bloco 4**, com protótipos parciais já existentes para os blocos 5, 6 e 9. O envio do novo repositório `api-cenarios` à nuvem depende apenas da definição de seu endereço remoto.
+O roteiro completo possui **11 blocos, numerados de 0 a 10**. Os **Blocos 0 a 4 foram concluídos** e o próximo trabalho é o **Bloco 5**, com protótipos parciais já existentes para os blocos 5, 6 e 9. O envio do novo repositório `api-cenarios` à nuvem depende apenas da definição de seu endereço remoto.
 
 | Bloco | Fase | Situação em 01/10/2026 | Entrega que encerra a fase |
 |---:|---|---|---|
@@ -82,7 +82,7 @@ O roteiro completo possui **11 blocos, numerados de 0 a 10**. Os **Blocos 0, 1, 
 | 1 | Testes de caracterização | **Concluído — 22 testes aprovados** | Testes preservam validador, solver, comparação, versões, restauração, endpoints, concessões e ajustes localizados |
 | 2 | Encapsulamento seguro | **Concluído — 36 testes aprovados** | Código existente preservado e acessado por adapters/fachadas e endpoint leve |
 | 3 | Persistência completa | **Concluído — 42 testes e ciclo MySQL aprovados** | V6/V7 aplicadas; três alternativas e publicação persistidas |
-| 4 | Snapshot completo das regras | Pendente | Motor recebe matriz, IDs, bloqueios, preferências, travas e origem |
+| 4 | Snapshot completo das regras | **Concluído — 44 testes e integração real** | Motor recebe matriz, IDs, bloqueios, preferências, travas e origem |
 | 5 | Três caminhos de fechamento | Protótipo parcial | Três soluções distintas, válidas, persistidas e explicadas |
 | 6 | Viabilidade e concessões | Protótipo parcial | Sistema informa exatamente quais restrições liberar para fechar 100% |
 | 7 | Ajuste cirúrgico | Pendente | Mudança localizada sem alterar o restante da grade |
@@ -90,7 +90,7 @@ O roteiro completo possui **11 blocos, numerados de 0 a 10**. Os **Blocos 0, 1, 
 | 9 | Frontend final | Protótipo parcial | Tela modular para comparar, decidir, publicar, restaurar e desfazer |
 | 10 | Piloto e aceite | Pendente | Caso real aprovado, reinício/restauração testados e aceite do gestor |
 
-**Contagem objetiva:** são 11 blocos no total. Os Blocos 0 a 3 estão concluídos; restam 7 blocos formais, do Bloco 4 ao aceite final. Como parte do código futuro já existe, alguns blocos serão trabalho de teste, correção e organização, não implementação do zero.
+**Contagem objetiva:** são 11 blocos no total. Os Blocos 0 a 4 estão concluídos; restam 6 blocos formais, do Bloco 5 ao aceite final. Como parte do código futuro já existe, alguns blocos serão trabalho de teste, correção e organização, não implementação do zero.
 
 ### Marcos de controle
 
@@ -412,6 +412,10 @@ As tabelas V1 a V5 existem. O fonte mostrou uma lacuna: a publicação atual alt
 - manter `PrincipalExecucaoController`, `PrincipalService`, `AppState` e `WorkflowManager` intactos até os testes demonstrarem substituição segura;
 - nunca fazer o frontend consultar banco diretamente para o fluxo novo.
 
+**Conclusão em 02/10/2026:** criado `RegraSnapshotV1` e ampliado `GradeSnapshotV1` com contexto, IDs, professores, cargas, atribuições, disciplinas, turmas detalhadas e regras com campos normalizados e valores originais. A API principal ganhou o endpoint leve e somente leitura `GET /api/grade-origem/snapshot`, implementado com Dapper e sem instanciar `AppState` ou disparar o processamento legado. O `api-cenarios` ganhou `IGradeOrigemClient`, `GradeOrigemClient`, `PreparacaoSolverFactory` e `GET /api/grade-origem/carregar`.
+
+Teste integrado real com escola 103, ano 2025 e período MANHA: 12 turmas, 19 professores, carga total 360, 46 disciplinas e 86 regras preservadas. Os códigos reais `SEG1`, `TER2`, `QUA1`, `QUI1` e `SEX1` foram normalizados; 86/86 bloqueios chegaram ao solver. O fechamento executou em memória com status `FEASIBLE`, 3.266 variáveis, 321 aulas distribuídas e 39 pendentes. Suíte do microsserviço: 44/44 testes aprovados. Commits locais: API principal `8a221eb`; microsserviço `b959159` e `568c8ea`. O Bloco 4 está concluído.
+
 **Dados obrigatórios no snapshot:**
 
 - IDs e cargas dos professores;
@@ -531,9 +535,7 @@ Não iniciaremos novas regras diretamente nos arquivos grandes. A ordem é:
 
 ## 8. Próximo passo exato
 
-**Próxima tarefa:** iniciar o Bloco 4 mapeando, sem alterar o fluxo legado, todos os dados de origem necessários ao snapshot: IDs reais de professores, turmas e disciplinas; cargas; bloqueios; preferências; travas; regras; escola, ano e período. Depois criar `RegraSnapshotV1` e testes de caracterização que provem que nenhuma informação usada pelo processamento atual se perde na conversão.
-
-Não ampliar o solver ainda. Primeiro o snapshot precisa transportar integralmente as regras reais para que as próximas três soluções respeitem os mesmos dados do sistema atual.
+**Próxima tarefa:** iniciar o Bloco 5 usando o caso real já comprovado: gerar três soluções realmente distintas para as 39 aulas pendentes, aplicar as estratégias ajuste mínimo, qualidade pedagógica e equilíbrio docente, medir diversidade entre elas e persistir as três alternativas na simulação. Não alterar o fluxo legado; ampliar somente os serviços e contratos do `api-cenarios`.
 
 ## 9. Diário resumido
 
@@ -552,6 +554,7 @@ Não ampliar o solver ainda. Primeiro o snapshot precisa transportar integralmen
 | 01/10/2026 | Conclusão do encapsulamento seguro | Commits locais `9171de9` e `83b7d2b`; mapper, fachada e endpoint leve concluídos; 36/36 testes; build sem avisos | Iniciar Flyway V6/V7 e persistência Dapper do Bloco 3 |
 | 01/10/2026 | Persistência Dapper do Bloco 3 | Flyway V6/V7 aplicado pelo gestor; alternativas, adoção transacional, publicação, revogação e restauração implementadas; 41/41 testes; sem EF e sem exclusão de histórico | Executar ciclo integrado no MySQL e comprovar restauração após reinício |
 | 01/10/2026 | Conclusão integrada do Bloco 3 | Simulação 1, cenário 3: três alternativas persistidas, versão 4 adotada, três publicações históricas e restauração confirmada após reinício; correção `DateOnly`; 42/42 testes | Iniciar Bloco 4 pelo inventário completo das regras e dados de origem |
+| 02/10/2026 | Conclusão do Bloco 4 | Snapshot completo via Dapper; integração API principal → motor; 12 turmas, 19 professores, carga 360, 46 disciplinas e 86/86 bloqueios; solver FEASIBLE com 321 aulas e 39 pendentes; 44/44 testes | Iniciar Bloco 5 e gerar três soluções distintas para o caso real |
 
 ## 10. Como atualizar este documento
 

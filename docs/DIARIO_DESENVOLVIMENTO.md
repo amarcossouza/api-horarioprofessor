@@ -471,3 +471,26 @@ api-cenarios/
 - `cenarios.js` — Funções `gerar3AlternativasFechamento()`, `renderizar3Alternativas()`, `visualizarAlternativaNaGrade()` e `adotarAlternativaDefinitiva()` (atualiza matrizes da tela com 510 aulas e grava versão oficial).
 
 **Status:** ✅ MOTOR DE 3 ALTERNATIVAS 100% IMPLEMENTADO E INTEGRADO
+
+---
+
+### Sessão — Fechamento exato com dados reais da escola 94
+
+**Problema comprovado:** a grade legada possuía 498/510 posições, enquanto a carga por turma estava desequilibrada (`2C=31` e `3D=29`). Isso impedia matematicamente o fechamento direto.
+
+**Implementação:**
+- a carga é normalizada somente dentro da simulação, sem alterar o cadastro original;
+- a matriz professor × turma é decomposta em 30 grupos sem conflito;
+- o CP-SAT posiciona os grupos nos 30 horários minimizando preferências violadas e alterações da origem;
+- cada alternativa grava a matriz completa, movimentações e a relação exata de professor, dia, aula e turma cuja preferência cadastrada não pôde ser atendida;
+- a primeira alternativa é aberta automaticamente no frontend após a conclusão.
+
+**Evidências:**
+- simulação real `23` concluída em aproximadamente `2,2 s`;
+- três alternativas distintas (hashes diferentes);
+- todas com `510/510`, zero células vazias e zero professor em duas turmas no mesmo horário;
+- preferências não atendidas: opção 1 = 14, opção 2 = 13, opção 3 = 16;
+- `51/51` testes do microsserviço aprovados;
+- frontend compilado em Release com zero erros.
+
+**Próximo passo:** aceite visual autenticado pelo gestor e adoção de uma das três alternativas.

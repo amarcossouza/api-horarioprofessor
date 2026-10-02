@@ -565,7 +565,7 @@ Não iniciaremos novas regras diretamente nos arquivos grandes. A ordem é:
 
 ## 8. Próximo passo exato
 
-**Próxima tarefa:** executar o aceite visual autenticado do Bloco 9 no fluxo normal do gestor: abrir “Fechamento inteligente”, recuperar a simulação 10, visualizar e comparar as três grades, pesquisar IVONETE/MARCO e confirmar os controles do ajuste pontual. Em seguida iniciar o Bloco 10 com o piloto completo, sem investir em acabamento visual.
+**Próxima tarefa:** executar o aceite visual autenticado do novo fechamento exato no fluxo normal do gestor: processar a escola 94/2025/MANHÃ, abrir “Fechamento inteligente”, gerar as três sugestões, conferir as cinco matrizes completas e validar a relação de professores/dias/aulas cujas preferências não foram atendidas. Depois escolher uma sugestão e comprovar sua restauração após reinício.
 
 ## 9. Diário resumido
 
@@ -591,6 +591,7 @@ Não iniciaremos novas regras diretamente nos arquivos grandes. A ordem é:
 | 02/10/2026 | Conclusão do Bloco 8 | Fila `Channel`, worker único, estado persistido, recuperação de pendentes após reinício, consulta e cancelamento; 51/51 testes; trabalho 7 concluído com três alternativas recuperadas e trabalho 8 cancelado sem resultados | Iniciar Bloco 9 com integração modular do frontend |
 | 02/10/2026 | Primeira entrega funcional do Bloco 9 | Frontend modular integrado à fila; três alternativas recuperáveis; cinco grades por sugestão; busca e destaque de professor; concessões exibidas; adoção transacional; build Release sem erros; simulação 9 com três resultados 360/360 e alternativa 22 adotada como versão 6 | Integrar seleção do ajuste cirúrgico, comparação e teste visual autenticado |
 | 02/10/2026 | Ajuste cirúrgico e comparação no frontend | Seleção explícita de professores/turmas; três novos ajustes recuperáveis; comparação entre opções; controller aliviado por serviço de montagem; build sem erros; simulação 10 com 45 posições liberadas, 315 protegidas, três grades 360/360 e zero mudança fora do escopo | Fazer aceite visual autenticado e iniciar o Bloco 10 |
+| 02/10/2026 | Fechamento exato da escola 94/2025/MANHÃ | Motor bipartido professor × turma com ordenação CP-SAT; normalização apenas em memória do desequilíbrio 2C=31/3D=29; simulação 23 concluída em 2,2 s; três hashes distintos; cada opção com 510/510 aulas, zero vazios e zero professor duplicado; 14, 13 e 16 preferências não atendidas respectivamente; 51/51 testes e builds sem erros | Aceite visual pelo gestor e escolha de uma alternativa |
 
 ## 10. Como atualizar este documento
 

@@ -23,7 +23,7 @@ Entregar um processo de fechamento que:
 
 ### Situação resumida
 
-O projeto concluiu o **Marco D — Fechamento inteligente**. Os Blocos 0 a 7 estão concluídos e o próximo trabalho é permitir que simulações mais longas sejam executadas, acompanhadas e retomadas em segundo plano.
+O projeto concluiu o **Bloco 8 — Execução longa**. Os Blocos 0 a 8 estão concluídos e o próximo trabalho é integrar ao frontend as operações já comprovadas pelo motor.
 
 As estruturas principais já possuem código, mas ainda não devem ser consideradas prontas para produção. Existe um protótipo funcional do versionamento, validador, CP-SAT, comparação, concessões e geração de três alternativas. Agora precisamos proteger esse código, criar testes, encapsular o que já funciona e provar o fechamento com dados reais. Não haverá reescrita geral nem divisão do código existente apenas por organização.
 
@@ -50,6 +50,9 @@ As estruturas principais já possuem código, mas ainda não devem ser considera
 | Fechamento real | Simulação 5: ALT_A, ALT_B e ALT_C distintas, todas com 360/360 aulas e nenhuma concessão necessária |
 | Ajuste cirúrgico real | Simulação 6: 45 posições liberadas, 315 protegidas, três grades distintas de 360/360 e recuperação confirmada |
 | Regressão após ajuste localizado | 49/49 testes automatizados aprovados |
+| Execução em segundo plano | Trabalho 7 respondeu `202` em 484 ms, concluiu e permitiu recuperar três alternativas |
+| Cancelamento | Trabalho 8 permaneceu `CANCELADA` e não gravou alternativas |
+| Regressão após fila | 51/51 testes automatizados aprovados |
 
 ### O que ainda não foi comprovado
 
@@ -58,7 +61,7 @@ As estruturas principais já possuem código, mas ainda não devem ser considera
 - concessão dirigida validada no piloto escolhido pelo gestor;
 - adoção e restauração ponta a ponta pelo frontend;
 - publicação oficial com referência persistente e vigência completa;
-- testes automatizados de regressão, integração e concorrência;
+- testes de concorrência com múltiplos gestores no piloto;
 - recuperação segura após reiniciar os três serviços.
 
 ### Processamento que já existe no fonte
@@ -80,7 +83,7 @@ Isso representa um **protótipo funcional adiantado**, não a conclusão formal 
 
 ### Painel mestre — 11 blocos até a conclusão
 
-O roteiro completo possui **11 blocos, numerados de 0 a 10**. Os **Blocos 0 a 7 foram concluídos** e o próximo trabalho é o **Bloco 8**, com protótipo parcial já existente para o bloco 9. O envio do novo repositório `api-cenarios` à nuvem depende apenas da definição de seu endereço remoto.
+O roteiro completo possui **11 blocos, numerados de 0 a 10**. Os **Blocos 0 a 8 foram concluídos** e o próximo trabalho é o **Bloco 9**, cujo frontend inicial já possui protótipos que serão ampliados sem quebrar o fluxo legado. O envio do novo repositório `api-cenarios` à nuvem depende apenas da definição de seu endereço remoto.
 
 | Bloco | Fase | Situação em 01/10/2026 | Entrega que encerra a fase |
 |---:|---|---|---|
@@ -92,11 +95,11 @@ O roteiro completo possui **11 blocos, numerados de 0 a 10**. Os **Blocos 0 a 7 
 | 5 | Três caminhos de fechamento | **Concluído — 45 testes e caso real persistido** | Três soluções distintas, válidas, persistidas e explicadas |
 | 6 | Viabilidade e concessões | **Concluído — 48 testes e simulação real** | Sistema informa exatamente quais restrições liberar para fechar 100% |
 | 7 | Ajuste cirúrgico | **Concluído — 49 testes e simulação real** | Mudança localizada sem alterar o restante da grade |
-| 8 | Execução longa | Pendente | Simulações em segundo plano, retomáveis e acompanháveis |
+| 8 | Execução longa | **Concluído — 51 testes e ciclo real** | Simulações em segundo plano, retomáveis e acompanháveis |
 | 9 | Frontend final | Protótipo parcial | Tela modular para comparar, decidir, publicar, restaurar e desfazer |
 | 10 | Piloto e aceite | Pendente | Caso real aprovado, reinício/restauração testados e aceite do gestor |
 
-**Contagem objetiva:** são 11 blocos no total. Os Blocos 0 a 7 estão concluídos; restam 3 blocos formais, do Bloco 8 ao aceite final. Como parte do código futuro já existe, alguns blocos serão trabalho de teste, correção e organização, não implementação do zero.
+**Contagem objetiva:** são 11 blocos no total. Os Blocos 0 a 8 estão concluídos; restam 2 blocos formais: frontend final e piloto/aceite.
 
 ### Marcos de controle
 
@@ -541,7 +544,7 @@ Não iniciaremos novas regras diretamente nos arquivos grandes. A ordem é:
 
 ## 8. Próximo passo exato
 
-**Próxima tarefa:** iniciar o Bloco 8 sem alterar o solver: criar fila em memória, `BackgroundService` e endpoints leves para solicitar, consultar e cancelar trabalhos; persistir o estado na tabela `hprof_simulacao`; impedir chamadas HTTP abertas durante otimizações longas; permitir que o frontend recupere o resultado pelo identificador da simulação. Redis permanece fora desta fase enquanto houver uma única instância.
+**Próxima tarefa:** iniciar o Bloco 9 no `HorarioProfessor2025_v2`: criar cliente e controller leves para solicitar trabalho em segundo plano, consultar status e recuperar alternativas; exibir três grades, diferenças e concessões; permitir salvar, voltar depois, comparar e escolher; incluir ajuste cirúrgico com seleção explícita de professores e turmas. Preservar as telas e rotas legadas como retorno seguro.
 
 ## 9. Diário resumido
 
@@ -564,6 +567,7 @@ Não iniciaremos novas regras diretamente nos arquivos grandes. A ordem é:
 | 02/10/2026 | Conclusão do Bloco 5 | Modelo com semente, penalidade real de janelas, diversidade e proibição de repetição; 45/45 testes; cenário 4, versão 5 e simulação 2 persistidos; ALT_A/ALT_B/ALT_C com hashes distintos e diferenças de 393/402 células | Iniciar Bloco 6 e descobrir as concessões mínimas para as 39 aulas pendentes |
 | 02/10/2026 | Conclusão do Bloco 6 | Corrigido limite diário dos regentes (causa das 39 pendências); concessões automáticas penalizadas e explicadas por professor/dia/aula/turma; fechamento exato obrigatório; 48/48 testes; simulação 5 com três grades distintas de 360/360 e zero concessões no caso real | Iniciar Bloco 7 com ajuste cirúrgico sobre alternativa completa |
 | 02/10/2026 | Conclusão do Bloco 7 | Endpoint e serviço leve de ajuste cirúrgico; escopo explícito; validação que rejeita mudança externa; persistência recuperável; 49/49 testes; simulação 6 com IVONETE/MARCO, 45 posições liberadas, 315 protegidas e três grades distintas de 360/360 | Iniciar Bloco 8 com execução em segundo plano |
+| 02/10/2026 | Conclusão do Bloco 8 | Fila `Channel`, worker único, estado persistido, recuperação de pendentes após reinício, consulta e cancelamento; 51/51 testes; trabalho 7 concluído com três alternativas recuperadas e trabalho 8 cancelado sem resultados | Iniciar Bloco 9 com integração modular do frontend |
 
 ## 10. Como atualizar este documento
 

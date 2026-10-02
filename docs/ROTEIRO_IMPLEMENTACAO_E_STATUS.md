@@ -23,7 +23,7 @@ Entregar um processo de fechamento que:
 
 ### Situação resumida
 
-O projeto está no **Marco D — Fechamento inteligente**. Os Blocos 0 a 5 estão concluídos e o próximo trabalho é identificar as concessões mínimas que permitam fechar as 39 aulas ainda pendentes.
+O projeto está no **Marco D — Fechamento inteligente**. Os Blocos 0 a 6 estão concluídos e o próximo trabalho é permitir ajustes cirúrgicos posteriores sem reorganizar o restante da grade.
 
 As estruturas principais já possuem código, mas ainda não devem ser consideradas prontas para produção. Existe um protótipo funcional do versionamento, validador, CP-SAT, comparação, concessões e geração de três alternativas. Agora precisamos proteger esse código, criar testes, encapsular o que já funciona e provar o fechamento com dados reais. Não haverá reescrita geral nem divisão do código existente apenas por organização.
 
@@ -45,12 +45,15 @@ As estruturas principais já possuem código, mas ainda não devem ser considera
 | Três caminhos reais | Simulação 2 do cenário 4: ALT_A, ALT_B e ALT_C persistidas com três hashes distintos |
 | Diversidade medida | ALT_B difere em 393 células da anterior; ALT_C difere em 402 células da anterior |
 | Regressão do motor | 45/45 testes automatizados aprovados |
+| Diagnóstico de concessões | 48/48 testes; bloqueios tratados como exceções simuladas, sem alterar o cadastro original |
+| Caso real corrigido | Regentes de turma única passaram a usar limite diário compatível com a carga semanal |
+| Fechamento real | Simulação 5: ALT_A, ALT_B e ALT_C distintas, todas com 360/360 aulas e nenhuma concessão necessária |
 
 ### O que ainda não foi comprovado
 
-- qualidade pedagógica e operacional das três alternativas;
+- aceite do gestor sobre a qualidade pedagógica e operacional das três alternativas;
 - respeito a todos os bloqueios e preferências provenientes do cadastro;
-- concessão dirigida de professor em um caso matematicamente inviável;
+- concessão dirigida validada no piloto escolhido pelo gestor;
 - adoção e restauração ponta a ponta pelo frontend;
 - publicação oficial com referência persistente e vigência completa;
 - ajuste cirúrgico posterior preservando o restante da grade;
@@ -76,7 +79,7 @@ Isso representa um **protótipo funcional adiantado**, não a conclusão formal 
 
 ### Painel mestre — 11 blocos até a conclusão
 
-O roteiro completo possui **11 blocos, numerados de 0 a 10**. Os **Blocos 0 a 5 foram concluídos** e o próximo trabalho é o **Bloco 6**, com protótipos parciais já existentes para os blocos 6 e 9. O envio do novo repositório `api-cenarios` à nuvem depende apenas da definição de seu endereço remoto.
+O roteiro completo possui **11 blocos, numerados de 0 a 10**. Os **Blocos 0 a 6 foram concluídos** e o próximo trabalho é o **Bloco 7**, com protótipo parcial já existente para o bloco 9. O envio do novo repositório `api-cenarios` à nuvem depende apenas da definição de seu endereço remoto.
 
 | Bloco | Fase | Situação em 01/10/2026 | Entrega que encerra a fase |
 |---:|---|---|---|
@@ -86,13 +89,13 @@ O roteiro completo possui **11 blocos, numerados de 0 a 10**. Os **Blocos 0 a 5 
 | 3 | Persistência completa | **Concluído — 42 testes e ciclo MySQL aprovados** | V6/V7 aplicadas; três alternativas e publicação persistidas |
 | 4 | Snapshot completo das regras | **Concluído — 44 testes e integração real** | Motor recebe matriz, IDs, bloqueios, preferências, travas e origem |
 | 5 | Três caminhos de fechamento | **Concluído — 45 testes e caso real persistido** | Três soluções distintas, válidas, persistidas e explicadas |
-| 6 | Viabilidade e concessões | Protótipo parcial | Sistema informa exatamente quais restrições liberar para fechar 100% |
+| 6 | Viabilidade e concessões | **Concluído — 48 testes e simulação real** | Sistema informa exatamente quais restrições liberar para fechar 100% |
 | 7 | Ajuste cirúrgico | Pendente | Mudança localizada sem alterar o restante da grade |
 | 8 | Execução longa | Pendente | Simulações em segundo plano, retomáveis e acompanháveis |
 | 9 | Frontend final | Protótipo parcial | Tela modular para comparar, decidir, publicar, restaurar e desfazer |
 | 10 | Piloto e aceite | Pendente | Caso real aprovado, reinício/restauração testados e aceite do gestor |
 
-**Contagem objetiva:** são 11 blocos no total. Os Blocos 0 a 5 estão concluídos; restam 5 blocos formais, do Bloco 6 ao aceite final. Como parte do código futuro já existe, alguns blocos serão trabalho de teste, correção e organização, não implementação do zero.
+**Contagem objetiva:** são 11 blocos no total. Os Blocos 0 a 6 estão concluídos; restam 4 blocos formais, do Bloco 7 ao aceite final. Como parte do código futuro já existe, alguns blocos serão trabalho de teste, correção e organização, não implementação do zero.
 
 ### Marcos de controle
 
@@ -537,7 +540,7 @@ Não iniciaremos novas regras diretamente nos arquivos grandes. A ordem é:
 
 ## 8. Próximo passo exato
 
-**Próxima tarefa:** iniciar o Bloco 6 sobre o cenário real 4 e a simulação 2: diagnosticar as 39 aulas pendentes, localizar os bloqueios responsáveis, calcular conjuntos mínimos de concessões e retornar três propostas de fechamento. Cada proposta deverá informar professor, dia, slot, turma/aula afetada, justificativa e impacto, sem modificar o cadastro original. As concessões existirão somente na simulação até a decisão do gestor.
+**Próxima tarefa:** iniciar o Bloco 7 sobre uma das alternativas completas da simulação 5. Implementar ajuste cirúrgico com escopo explícito de professores, turmas e posições que podem mudar; travar todo o restante; devolver até três soluções localizadas; comprovar por teste que nenhuma célula fora do escopo foi alterada; persistir as propostas como novas alternativas sem substituir a versão oficial.
 
 ## 9. Diário resumido
 
@@ -558,6 +561,7 @@ Não iniciaremos novas regras diretamente nos arquivos grandes. A ordem é:
 | 01/10/2026 | Conclusão integrada do Bloco 3 | Simulação 1, cenário 3: três alternativas persistidas, versão 4 adotada, três publicações históricas e restauração confirmada após reinício; correção `DateOnly`; 42/42 testes | Iniciar Bloco 4 pelo inventário completo das regras e dados de origem |
 | 02/10/2026 | Conclusão do Bloco 4 | Snapshot completo via Dapper; integração API principal → motor; 12 turmas, 19 professores, carga 360, 46 disciplinas e 86/86 bloqueios; solver FEASIBLE com 321 aulas e 39 pendentes; 44/44 testes | Iniciar Bloco 5 e gerar três soluções distintas para o caso real |
 | 02/10/2026 | Conclusão do Bloco 5 | Modelo com semente, penalidade real de janelas, diversidade e proibição de repetição; 45/45 testes; cenário 4, versão 5 e simulação 2 persistidos; ALT_A/ALT_B/ALT_C com hashes distintos e diferenças de 393/402 células | Iniciar Bloco 6 e descobrir as concessões mínimas para as 39 aulas pendentes |
+| 02/10/2026 | Conclusão do Bloco 6 | Corrigido limite diário dos regentes (causa das 39 pendências); concessões automáticas penalizadas e explicadas por professor/dia/aula/turma; fechamento exato obrigatório; 48/48 testes; simulação 5 com três grades distintas de 360/360 e zero concessões no caso real | Iniciar Bloco 7 com ajuste cirúrgico sobre alternativa completa |
 
 ## 10. Como atualizar este documento
 

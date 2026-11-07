@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Só para rodar o Flyway pelo Maven. Usa a conexão que já está em flyway.conf.
+  Não faz parte do build da API (.NET).
+
+  Tabelas:                        mvn flyway:info      /  mvn flyway:migrate
+  Tabelas + carga de demonstração: mvn -Pdemo flyway:info / mvn -Pdemo flyway:migrate
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>br.com.horarioprofessor</groupId>
+  <artifactId>horarioprofessor-flyway</artifactId>
+  <version>1.0.0</version>
+  <packaging>pom</packaging>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <flyway.version>10.20.1</flyway.version>
+  </properties>
+
+  <profiles>
+    <profile>
+      <!-- acrescenta a carga de demonstração (flyway/sql-demo) às migrações normais -->
+      <id>demo</id>
+      <properties>
+        <flyway.locations>filesystem:sql,filesystem:sql-demo</flyway.locations>
+      </properties>
+    </profile>
+  </profiles>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.flywaydb</groupId>
+        <artifactId>flyway-maven-plugin</artifactId>
+        <version>${flyway.version}</version>
+        <configuration>
+          <configFiles>
+            <configFile>${project.basedir}/flyway.conf</configFile>
+          </configFiles>
+          <locations>
+            <location>filesystem:${project.basedir}/sql</location>
+          </locations>
+          <cleanDisabled>true</cleanDisabled>
+        </configuration>
+        <dependencies>
+          <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-mysql</artifactId>
+            <version>${flyway.version}</version>
+          </dependency>
+          <dependency>
+            <groupId>com.mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
+            <version>8.4.0</version>
+          </dependency>
+        </dependencies>
+      </plugin>
+    </plugins>
+  </build>
+</project>

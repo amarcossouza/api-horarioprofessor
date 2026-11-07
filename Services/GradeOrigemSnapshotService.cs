@@ -42,30 +42,20 @@ public sealed class GradeOrigemSnapshotService : IGradeOrigemSnapshotService
              ORDER BY Sigla, Id
             """, parametros)).ToList();
 
+        // Regras sempre do cadastro de opções do professor: 1ª e 2ª opção, com a sigla
+        // (AC = acúmulo de cargo). A tabela de processamento só tem a 1ª opção e muda
+        // conforme o último botão usado no motor antigo (no "fechamento" fica só com ATPC).
         var regras = (await connection.QueryAsync<RegraOrigem>("""
             SELECT o.Id, o.IdProfessor_fk AS IdProfessor, p.NomeProfessor,
                    o.Linha, o.Coluna, o.Opcao, o.OpcaoDaSemana, o.Tipo, o.Sigla, o.Ativo
-              FROM hprof_opcaohorarioprocessamento o
+              FROM hprof_opcaohorario o
               LEFT JOIN hprof_cadastroprofessor p ON p.ProfessorId = o.IdProfessor_fk
              WHERE o.IdEscola = @IdEscola AND o.AnoLetivo = @AnoLetivo
-               AND o.Periodo = @Periodo AND o.Ativo = 1
+               AND o.Periodo = @Periodo AND o.Ativo = 1 AND o.Sigla <> 'REMOVE'
+               AND o.Opcao IN (1, 2)
              ORDER BY o.IdProfessor_fk, o.Opcao, o.Linha, o.Coluna
             """, parametros)).ToList();
-
-        var origemRegra = "PROCESSAMENTO";
-        if (regras.Count == 0)
-        {
-            regras = (await connection.QueryAsync<RegraOrigem>("""
-                SELECT o.Id, o.IdProfessor_fk AS IdProfessor, p.NomeProfessor,
-                       o.Linha, o.Coluna, o.Opcao, o.OpcaoDaSemana, o.Tipo, o.Sigla, o.Ativo
-                  FROM hprof_opcaohorario o
-                  LEFT JOIN hprof_cadastroprofessor p ON p.ProfessorId = o.IdProfessor_fk
-                 WHERE o.IdEscola = @IdEscola AND o.AnoLetivo = @AnoLetivo
-                   AND o.Periodo = @Periodo AND o.Ativo = 1 AND o.Sigla <> 'REMOVE'
-                 ORDER BY o.IdProfessor_fk, o.Opcao, o.Linha, o.Coluna
-                """, parametros)).ToList();
-            origemRegra = "CADASTRO";
-        }
+        const string origemRegra = "CADASTRO";
 
         var nomesTurmas = turmas.Select(t => t.Turmas?.Trim() ?? "")
             .Where(t => t.Length > 0).Distinct(StringComparer.OrdinalIgnoreCase).ToList();

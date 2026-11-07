@@ -49,7 +49,10 @@ builder.Services.AddTransient<IEscolaService, EscolaService>();
 builder.Services.AddTransient<IUsuarioAcessoService, UsuarioAcessoService>();
 
 // Registrar o serviço IProfessorService e sua implementação
-builder.Services.AddTransient<IProfessorService, ProfessorService>();
+// Módulo universidade: o ProfessorService original continua igual; o serviço abaixo o envolve
+// e só acrescenta o AC automático (ocupação em outro curso) para cursos de universidade.
+builder.Services.AddTransient<ProfessorService>();
+builder.Services.AddTransient<IProfessorService, API_HorarioProfessor.Universidade.Motores.ProfessorServiceUniversidade>();
 
 // Registro do serviço de distribuição do horário do professor
 builder.Services.AddTransient<PrincipalService>();
@@ -67,9 +70,22 @@ builder.Services.AddScoped<GetMaterialAulasPorAno>();
 // No arquivo Program.cs ou Startup.cs
 builder.Services.AddScoped<HorarioService>();
 builder.Services.AddScoped<HorarioDistribuicaoService>();
-builder.Services.AddScoped<IGradeOrigemSnapshotService>(_ =>
-    new GradeOrigemSnapshotService(connectionString
-        ?? throw new InvalidOperationException("String de conexão não configurada.")));
+builder.Services.AddScoped<IGradeOrigemSnapshotService>(sp =>
+    new API_HorarioProfessor.Universidade.Motores.GradeOrigemSnapshotUniversidade(
+        new GradeOrigemSnapshotService(connectionString
+            ?? throw new InvalidOperationException("String de conexão não configurada.")),
+        sp.GetRequiredService<API_HorarioProfessor.Universidade.Servicos.IOcupacaoUniversidadeService>(),
+        sp.GetRequiredService<ILogger<API_HorarioProfessor.Universidade.Motores.GradeOrigemSnapshotUniversidade>>()));
+
+// ---------------- Módulo universidade (tabelas hprof_uni_*) ----------------
+builder.Services.AddSingleton(new API_HorarioProfessor.Universidade.UniversidadeConexao(connectionString
+    ?? throw new InvalidOperationException("String de conexão não configurada.")));
+builder.Services.AddScoped<API_HorarioProfessor.Universidade.Servicos.IntegracaoValidador>();
+builder.Services.AddScoped<API_HorarioProfessor.Universidade.Servicos.IntegracaoAplicador>();
+builder.Services.AddScoped<API_HorarioProfessor.Universidade.Servicos.IIntegracaoService, API_HorarioProfessor.Universidade.Servicos.IntegracaoService>();
+builder.Services.AddTransient<API_HorarioProfessor.Universidade.Servicos.IOcupacaoUniversidadeService, API_HorarioProfessor.Universidade.Servicos.OcupacaoUniversidadeService>();
+builder.Services.AddScoped<API_HorarioProfessor.Universidade.Servicos.IUniversidadeConsultaService, API_HorarioProfessor.Universidade.Servicos.UniversidadeConsultaService>();
+builder.Services.AddScoped<API_HorarioProfessor.Universidade.Servicos.IUniversidadeCadastroService, API_HorarioProfessor.Universidade.Servicos.UniversidadeCadastroService>();
 
 
 
